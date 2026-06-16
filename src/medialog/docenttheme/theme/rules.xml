@@ -13,6 +13,12 @@
   <notheme css:if-not-content="#visual-portal-wrapper" />
   <notheme css:if-content=".template-manage-viewlets" />
 
+  <!-- DocentIMS: load TinyMCE content/format styles on every page (WYSIWYG parity) -->
+  <after css:theme-children="head">
+    <link href="{$portal_url}/++plone++DocentIMS.ActionItems/css/tinymce-formats.css" rel="stylesheet" type="text/css" />
+  </after>
+
+
 
 <rules css:if-content="body.viewpermission-add-portal-content">
     <after css:theme-children="head">
