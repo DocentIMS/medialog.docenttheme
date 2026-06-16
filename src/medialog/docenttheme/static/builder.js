@@ -105,12 +105,16 @@
      (dead tokens like spellchecker, or toolbar-only items in the menu palette).
      Our own custom buttons (print/save) are always offered. */
   var CUSTOM = { print:1, save:1 };
+  // Bespoke selects (Styles, Paragraph format, Font, Font size, Line height,
+  // Align) register as nested menu items, NOT registry.buttons — so never
+  // filter them out of the toolbar palette.
+  var ALWAYS_TB = { print:1, save:1, styles:1, blocks:1, fontfamily:1, fontsize:1, align:1, lineheight:1 };
   function toolbarItems(){
-    var d=discovered(), icons=(d&&d.icons)||{}, dbtn=(d&&d.buttons)||{}, out={};
-    var filter = !!(d && d.buttons);
+    var d=discovered(), icons=(d&&d.icons)||{}, dbtn=(d&&d.buttons)||{}, dmi=(d&&d.menuItems)||{}, out={};
+    var filter = !!(d && (d.buttons || d.menuItems));
     Object.keys(TOOLBAR).forEach(function(t){
-      if(filter && !dbtn[t] && !CUSTOM[t]) return;
-      var iname=dbtn[t]?dbtn[t].icon:t;
+      if(filter && !dbtn[t] && !dmi[t] && !ALWAYS_TB[t]) return;
+      var iname=(dbtn[t]&&dbtn[t].icon)||(dmi[t]&&dmi[t].icon)||t;
       out[t]={label:TOOLBAR[t][0], group:TOOLBAR[t][1], icon:icons[iname]||icons[t]||""};
     });
     return out;

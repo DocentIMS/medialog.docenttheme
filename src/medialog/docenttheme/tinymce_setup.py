@@ -24,7 +24,7 @@ logger = logging.getLogger("medialog.docenttheme")
 MENUBAR = "edit table format tools view insert"
 
 TOOLBAR = (
-    "ltr rtl | undo redo | styleselect | bold italic | "
+    "ltr rtl | undo redo | styles | bold italic | "
     "alignleft aligncenter alignright alignjustify | "
     "bullist numlist outdent indent | accordion | inserttable | "
     "unlink plonelink ploneimage"
