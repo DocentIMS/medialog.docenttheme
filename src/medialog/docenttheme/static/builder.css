@@ -29,3 +29,8 @@
 .tmce-menutabs { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:10px; }
 .tmce-menutab { padding:4px 12px; border:1px solid #d9dee3; border-radius:16px; background:#fff; cursor:pointer; font-size:12px; }
 .tmce-menutab.active { background:#0a64a4; color:#fff; border-color:#0a64a4; }
+/* real icons + refresh link */
+.tmce-chip__ic { display:inline-flex; align-items:center; }
+.tmce-chip__ic svg { width:18px; height:18px; }
+.tmce-refresh { float:right; font-size:11px; color:#0a64a4; cursor:pointer; text-decoration:underline; }
+.tmce-builder__head--fallback { color:#9a6700; }
