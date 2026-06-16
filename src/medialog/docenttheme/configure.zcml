@@ -42,6 +42,19 @@
 
   <!-- -*- extra stuff goes here -*- -->
 
+  <!-- TinyMCE Phase 1: 'Other settings' override guardrail -->
+  <adapter factory=".validators.OtherSettingsValidator" />
+
+  <!-- TinyMCE Phase 1: repair drift + apply standard preset (existing sites) -->
+  <genericsetup:upgradeStep
+      source="1000"
+      destination="1001"
+      title="Standardise TinyMCE editor settings"
+      description="Repair registry field-type drift and apply the standard editor preset."
+      profile="medialog.docenttheme:default"
+      handler=".upgrades.upgrade_tinymce_1001"
+      />
+
   <include package=".viewlets" />
 
   <plone:static

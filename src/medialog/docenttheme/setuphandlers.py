@@ -19,7 +19,8 @@ class HiddenProfiles(object):
 
 def post_install(context):
     """Post install script"""
-    # Do something at the end of the installation of this package.
+    from medialog.docenttheme.tinymce_setup import configure_tinymce
+    configure_tinymce(context)
 
 
 def uninstall(context):
