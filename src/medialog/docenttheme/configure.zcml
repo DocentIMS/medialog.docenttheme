@@ -55,6 +55,21 @@
       handler=".upgrades.upgrade_tinymce_1001"
       />
 
+  <!-- TinyMCE Phase 3: self-hosted toolbar-builder assets + bundle -->
+  <plone:static
+      directory="static" type="plone"
+      name="medialog.docenttheme"
+      />
+
+  <genericsetup:upgradeStep
+      source="1001"
+      destination="1002"
+      title="Register TinyMCE toolbar-builder bundle"
+      description="Registers the self-hosted drag-and-drop toolbar builder for the control panel."
+      profile="medialog.docenttheme:default"
+      handler=".upgrades.upgrade_builder_1002"
+      />
+
   <include package=".viewlets" />
 
   <plone:static

@@ -1,0 +1,31 @@
+/* TinyMCE builder — DocentIMS / medialog.docenttheme. Self-hosted, no deps. */
+.tmce-builder { border:1px solid #d9dee3; border-radius:8px; background:#fff; margin:4px 0 8px; }
+.tmce-builder__head { font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#52606d;
+  padding:8px 12px; border-bottom:1px solid #eef1f4; }
+.tmce-builder__body { padding:12px; display:grid; grid-template-columns:240px 1fr; gap:14px; align-items:start; }
+.tmce-builder__body--plain { display:block; }
+.tmce-pal__group { font-size:10px; text-transform:uppercase; color:#9aa5b1; margin:8px 0 4px; letter-spacing:.05em; }
+.tmce-pal__group:first-child { margin-top:0; }
+.tmce-pal__row { display:flex; flex-wrap:wrap; gap:5px; }
+.tmce-chip { display:inline-flex; align-items:center; gap:5px; background:#fff; border:1px solid #d9dee3;
+  border-radius:6px; padding:4px 8px; font-size:12px; cursor:grab; user-select:none; white-space:nowrap; }
+.tmce-chip:hover { border-color:#0a64a4; }
+.tmce-chip--sep { background:#eef1f4; color:#7b8794; font-weight:700; letter-spacing:2px; }
+.tmce-chip.dragging { opacity:.4; }
+.tmce-chip__x { color:#cbd2d9; font-weight:700; cursor:pointer; margin-left:2px; }
+.tmce-chip__x:hover { color:#e12d39; }
+.tmce-zone { border:2px dashed #d9dee3; border-radius:8px; padding:10px; min-height:46px;
+  display:flex; flex-wrap:wrap; gap:5px; background:#fbfcfd; align-content:flex-start; }
+.tmce-zone.over { border-color:#0a64a4; background:#f1f7fb; }
+.tmce-actions { margin-top:10px; display:flex; gap:8px; }
+.tmce-actions button { font-size:12px; padding:5px 12px; border:1px solid #d9dee3; border-radius:6px;
+  background:#e4e7eb; cursor:pointer; }
+.tmce-actions button:hover { background:#d9dee3; }
+.tmce-builder__note { font-size:11px; color:#9aa5b1; margin-top:8px; }
+/* menubar checkboxes */
+.tmce-checks { padding:4px 0; }
+.tmce-checks label { display:inline-flex; align-items:center; gap:5px; margin:0 14px 6px 0; font-size:13px; }
+/* menu tabs */
+.tmce-menutabs { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:10px; }
+.tmce-menutab { padding:4px 12px; border:1px solid #d9dee3; border-radius:16px; background:#fff; cursor:pointer; font-size:12px; }
+.tmce-menutab.active { background:#0a64a4; color:#fff; border-color:#0a64a4; }

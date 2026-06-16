@@ -1,21 +1,26 @@
 # -*- coding: utf-8 -*-
 """Standardised TinyMCE configuration for DocentIMS sites.
 
-Repairs registry field-type drift (e.g. ``menubar`` changing from ``List`` to
-``TextLine`` after a plone.base upgrade, or the plugin vocabulary gaining new
-entries like ``accordion``) and then applies a standard editor preset so every
-site is configured identically. Safe to run repeatedly.
+Rebinds the managed TinyMCE registry fields to their current schema
+definition (fixing type drift such as menubar List->TextLine, and stale
+vocabularies such as plugins gaining accordion), then applies a standard
+editor preset. Safe to run repeatedly.
+
+We deliberately rebind only the fields this preset writes, rather than
+calling registry.registerInterface(ITinyMCESchema). A full-schema refresh
+iterates every field in the schema and can trip on the persistent-field
+adapter of an unrelated field; the targeted approach below avoids that.
 """
 import json
 import logging
 
 from plone.base.interfaces import ITinyMCESchema
+from plone.registry.interfaces import IPersistentField
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
 
 logger = logging.getLogger("medialog.docenttheme")
 
-# --- The standardised "Standard" preset for all DocentIMS sites ---
 MENUBAR = "edit table format tools view insert"
 
 TOOLBAR = (
@@ -30,7 +35,7 @@ PLUGINS = [
     "pagebreak", "preview", "searchreplace", "table", "visualchars", "wordcount",
 ]
 
-# NOTE: no "plugins" key here on purpose — that would override the checkbox
+# No "plugins" key here on purpose - that would override the checkbox
 # selection above. External plugins load via "external_plugins".
 OTHER_SETTINGS = {
     "external_plugins": {
@@ -39,16 +44,20 @@ OTHER_SETTINGS = {
     }
 }
 
+MANAGED_FIELDS = ("menubar", "toolbar", "plugins", "other_settings")
+
 
 def repair_registry_fields(registry):
-    """Re-bind every ITinyMCESchema field to its current definition.
-
-    Fixes stale persistent records whose field *type* drifted from the schema
-    after a plone.base upgrade. Valid values are retained; values that no longer
-    validate fall back to the field default.
-    """
-    pass
-    logger.info("TinyMCE registry fields repaired (registerInterface).")
+    """Rebind each managed field to its current (correct) schema definition."""
+    for fname in MANAGED_FIELDS:
+        rec_name = "plone." + fname
+        if rec_name not in registry.records:
+            continue
+        new_field = IPersistentField(ITinyMCESchema[fname])
+        new_field.interfaceName = "plone.base.interfaces.ITinyMCESchema"
+        new_field.fieldName = fname
+        registry.records[rec_name].field = new_field
+        logger.info("Repaired TinyMCE registry field %s.", rec_name)
 
 
 def apply_preset(registry):
@@ -66,7 +75,7 @@ def apply_preset(registry):
 
 
 def configure_tinymce(context=None):
-    """Repair drift, then apply the standard preset. Idempotent."""
+    """Repair drift on the managed fields, then apply the preset. Idempotent."""
     registry = getUtility(IRegistry)
     repair_registry_fields(registry)
     apply_preset(registry)
