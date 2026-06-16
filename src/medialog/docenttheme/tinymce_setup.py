@@ -35,16 +35,45 @@ PLUGINS = [
     "pagebreak", "preview", "searchreplace", "table", "visualchars", "wordcount",
 ]
 
+# URL of our extra-buttons plugin (Print + Plone-wired Save), served from the
+# package's static directory and loaded via external_plugins.
+EXTRAS_URL = "/++plone++medialog.docenttheme/tiny-extras.js"
+
 # No "plugins" key here on purpose - that would override the checkbox
 # selection above. External plugins load via "external_plugins".
 OTHER_SETTINGS = {
     "external_plugins": {
         "mentions_autocomplete":
-            "/++plone++medialog.notifications/tiny_mce/plugins/index.js"
+            "/++plone++medialog.notifications/tiny_mce/plugins/index.js",
+        "docentextras": EXTRAS_URL,
     }
 }
 
 MANAGED_FIELDS = ("menubar", "toolbar", "plugins", "other_settings")
+
+
+def add_extras_plugin(registry):
+    """Merge the docentextras external plugin into the existing other_settings.
+
+    Unlike apply_preset() this preserves the admin's toolbar/menu/plugins and
+    any other other_settings keys - it only ensures the Print/Save plugin URL
+    is registered. Used by the upgrade step so existing sites gain the buttons
+    without losing their customisations.
+    """
+    rec = registry.records.get("plone.other_settings")
+    if rec is None:
+        return
+    try:
+        data = json.loads(rec.value or "{}")
+    except (ValueError, TypeError):
+        data = {}
+    if not isinstance(data, dict):
+        data = {}
+    ext = data.get("external_plugins") or {}
+    ext["docentextras"] = EXTRAS_URL
+    data["external_plugins"] = ext
+    registry["plone.other_settings"] = json.dumps(data)
+    logger.info("Registered docentextras (Print/Save) external plugin.")
 
 
 def repair_registry_fields(registry):

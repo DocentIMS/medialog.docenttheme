@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from medialog.docenttheme.tinymce_setup import add_extras_plugin
 from medialog.docenttheme.tinymce_setup import configure_tinymce
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
@@ -32,3 +33,9 @@ def register_builder_bundle(setup_context=None):
 def upgrade_builder_1002(setup_context):
     """Register the toolbar-builder bundle."""
     register_builder_bundle(setup_context)
+
+
+def upgrade_extras_1003(setup_context):
+    """Register the Print/Save extras plugin (preserves toolbar/menu/plugins)."""
+    registry = getUtility(IRegistry)
+    add_extras_plugin(registry)

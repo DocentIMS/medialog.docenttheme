@@ -57,7 +57,8 @@
 
   <!-- TinyMCE Phase 3: self-hosted toolbar-builder assets + bundle -->
   <plone:static
-      directory="static" type="plone"
+      directory="static"
+      type="plone"
       name="medialog.docenttheme"
       />
 
@@ -68,6 +69,16 @@
       description="Registers the self-hosted drag-and-drop toolbar builder for the control panel."
       profile="medialog.docenttheme:default"
       handler=".upgrades.upgrade_builder_1002"
+      />
+
+  <!-- Print + Plone-wired Save buttons via external_plugins -->
+  <genericsetup:upgradeStep
+      source="1002"
+      destination="1003"
+      title="Add Print and Save editor buttons"
+      description="Registers the docentextras external plugin (Print + Plone-wired Save)."
+      profile="medialog.docenttheme:default"
+      handler=".upgrades.upgrade_extras_1003"
       />
 
   <include package=".viewlets" />

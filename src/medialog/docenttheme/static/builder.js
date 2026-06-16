@@ -35,7 +35,8 @@
     media:["Media","Insert"], inserttable:["Table","Insert"], accordion:["Accordion","Insert"], charmap:["Special character","Insert"], emoticons:["Emoji","Insert"],
     hr:["Horizontal rule","Insert"], pagebreak:["Page break","Insert"], insertdatetime:["Date/time","Insert"], anchor:["Anchor","Insert"],
     searchreplace:["Find & replace","Tools"], code:["Source code","Tools"], preview:["Preview","Tools"], fullscreen:["Fullscreen","Tools"],
-    visualblocks:["Show blocks","Tools"], visualchars:["Show invisibles","Tools"], wordcount:["Word count","Tools"], help:["Help","Tools"]
+    visualblocks:["Show blocks","Tools"], visualchars:["Show invisibles","Tools"], wordcount:["Word count","Tools"], help:["Help","Tools"],
+    print:["Print","Tools"], save:["Save","Tools"]
   };
   var MENUITEMS_FB = {
     undo:"Undo", redo:"Redo", cut:"Cut", copy:"Copy", paste:"Paste", pastetext:"Paste as text", selectall:"Select all",
@@ -46,7 +47,8 @@
     bold:"Bold", italic:"Italic", underline:"Underline", strikethrough:"Strikethrough", superscript:"Superscript",
     subscript:"Subscript", formats:"Formats", removeformat:"Clear formatting", forecolor:"Text colour", backcolor:"Highlight",
     lineheight:"Line height", inserttable:"Insert table", tableprops:"Table properties", deletetable:"Delete table",
-    cell:"Cell", row:"Row", column:"Column", wordcount:"Word count", spellchecker:"Spell check"
+    cell:"Cell", row:"Row", column:"Column", wordcount:"Word count", spellchecker:"Spell check",
+    print:"Print", save:"Save"
   };
   var MENUS=["edit","insert","view","format","table","tools","help"];
   var TITLES={edit:"Edit",insert:"Insert",view:"View",format:"Format",table:"Table",tools:"Tools",help:"Help"};
@@ -95,16 +97,32 @@
   function haveDiscovery(){ var d=discovered(); return !!(d && d.buttons && Object.keys(d.buttons).length); }
 
   /* catalog used by the palette: prefer discovered (real label+icon), else curated */
+  /* Palettes are driven by the CURATED lists (clean, each token once, sensible
+     grouping). Real icons are pulled from the discovered registry by the
+     button/menu-item's icon name; falls back to no icon until discovery runs. */
+  /* Palettes are driven by the CURATED lists, but once we've captured the real
+     registry we ALSO hide any curated token the editor doesn't actually register
+     (dead tokens like spellchecker, or toolbar-only items in the menu palette).
+     Our own custom buttons (print/save) are always offered. */
+  var CUSTOM = { print:1, save:1 };
   function toolbarItems(){
-    var d=discovered(), out={};
-    if(d && d.buttons){ Object.keys(d.buttons).forEach(function(t){ out[t]={label:d.buttons[t].label, group:groupOf(t), icon:(d.icons||{})[d.buttons[t].icon]||""}; }); }
-    else { Object.keys(TOOLBAR).forEach(function(t){ out[t]={label:TOOLBAR[t][0], group:TOOLBAR[t][1], icon:""}; }); }
+    var d=discovered(), icons=(d&&d.icons)||{}, dbtn=(d&&d.buttons)||{}, out={};
+    var filter = !!(d && d.buttons);
+    Object.keys(TOOLBAR).forEach(function(t){
+      if(filter && !dbtn[t] && !CUSTOM[t]) return;
+      var iname=dbtn[t]?dbtn[t].icon:t;
+      out[t]={label:TOOLBAR[t][0], group:TOOLBAR[t][1], icon:icons[iname]||icons[t]||""};
+    });
     return out;
   }
   function menuItems(){
-    var d=discovered(), out={};
-    if(d && d.menuItems){ Object.keys(d.menuItems).forEach(function(t){ out[t]={label:d.menuItems[t].label, icon:(d.icons||{})[d.menuItems[t].icon]||""}; }); }
-    else { Object.keys(MENUITEMS_FB).forEach(function(t){ out[t]={label:MENUITEMS_FB[t], icon:""}; }); }
+    var d=discovered(), icons=(d&&d.icons)||{}, dmi=(d&&d.menuItems)||{}, out={};
+    var filter = !!(d && d.menuItems);
+    Object.keys(MENUITEMS_FB).forEach(function(t){
+      if(filter && !dmi[t] && !CUSTOM[t]) return;
+      var iname=dmi[t]?dmi[t].icon:t;
+      out[t]={label:MENUITEMS_FB[t], icon:icons[iname]||icons[t]||""};
+    });
     return out;
   }
 
@@ -149,8 +167,9 @@
   function zoneTokenSet(zone){ var s={}; [].forEach.call(zone.children,function(c){ if(c.dataset.token!=="|") s[c.dataset.token]=true; }); return s; }
 
   function head(root, text){
-    var h=el("div","tmce-builder__head"+(haveDiscovery()?"":" tmce-builder__head--fallback"), text+(haveDiscovery()?"":" (showing standard buttons — open a content editor once to load your site's exact set)"));
-    var r=el("span","tmce-refresh","↻ refresh"); r.title="Re-read the button list next time you open a content editor";
+    var note = haveDiscovery() ? "" : " (icons load after you open a content editor once)";
+    var h=el("div","tmce-builder__head", text+note);
+    var r=el("span","tmce-refresh","↻ refresh"); r.title="Re-read icons next time you open a content editor";
     r.addEventListener("click", function(){ try{ localStorage.removeItem(CACHE_KEY); }catch(e){} location.reload(); });
     h.appendChild(r); root.appendChild(h);
   }
