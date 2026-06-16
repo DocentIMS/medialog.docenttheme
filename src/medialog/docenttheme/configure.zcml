@@ -43,7 +43,6 @@
   <!-- -*- extra stuff goes here -*- -->
 
   <!-- TinyMCE Phase 1: 'Other settings' override guardrail -->
-  <adapter factory=".validators.OtherSettingsValidator" />
 
   <!-- TinyMCE Phase 1: repair drift + apply standard preset (existing sites) -->
   <genericsetup:upgradeStep
