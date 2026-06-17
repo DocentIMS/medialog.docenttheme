@@ -117,6 +117,14 @@
       var iname=(dbtn[t]&&dbtn[t].icon)||(dmi[t]&&dmi[t].icon)||t;
       out[t]={label:TOOLBAR[t][0], group:TOOLBAR[t][1], icon:icons[iname]||icons[t]||""};
     });
+    // Real buttons the curated list doesn't know about (custom-plugin buttons
+    // such as DocentIMS_CreateAI_btn) get offered under a "Custom" group so
+    // they can be dragged onto the toolbar like any other.
+    Object.keys(dbtn).forEach(function(t){
+      if(out[t] || TOOLBAR[t]) return;
+      var b=dbtn[t]||{}, iname=b.icon||t;
+      out[t]={label:b.label||t, group:"Custom", icon:icons[iname]||icons[t]||""};
+    });
     return out;
   }
   function menuItems(){
@@ -158,7 +166,7 @@
     container.innerHTML="";
     if(grouped){
       var groups={}; Object.keys(items).forEach(function(t){ if(!pluginEnabled(t)||exclude[t])return; (groups[items[t].group]=groups[items[t].group]||[]).push(t); });
-      ["History","Formatting","Paragraph","Insert","Tools","More"].forEach(function(g){
+      ["History","Formatting","Paragraph","Insert","Tools","More","Custom"].forEach(function(g){
         if(!groups[g])return; container.appendChild(el("div","tmce-pal__group",g));
         var row=el("div","tmce-pal__row"); groups[g].sort().forEach(function(t){ row.appendChild(paletteChip(t, items[t])); }); container.appendChild(row);
       });
@@ -186,13 +194,18 @@
     var pal=el("div","tmce-pal"); body.appendChild(pal);
     var right=el("div"); var zone=el("div","tmce-zone"); right.appendChild(zone);
     var actions=el("div","tmce-actions"); var bSep=el("button",null,"+ Separator"); bSep.type="button"; var bClr=el("button",null,"Clear"); bClr.type="button";
-    actions.appendChild(bSep); actions.appendChild(bClr); right.appendChild(actions); body.appendChild(right);
+    var inp=el("input","tmce-addcustom"); inp.type="text"; inp.placeholder="custom button name"; inp.title="Type a custom plugin's button name (e.g. DocentIMS_CreateAI_btn) and press Enter or Add";
+    var bAdd=el("button",null,"+ Add"); bAdd.type="button";
+    actions.appendChild(bSep); actions.appendChild(bClr); actions.appendChild(inp); actions.appendChild(bAdd); right.appendChild(actions); body.appendChild(right);
     ta.parentNode.insertBefore(root, ta.nextSibling);
     function refreshPal(){ buildPalette(pal, toolbarItems(), true, zoneTokenSet(zone)); }
     wireZone(zone, toolbarItems, function(){ ta.value=tidy([].map.call(zone.children,function(c){return c.dataset.token;})).join(" "); refreshPal(); });
     (ta.value||"").split(/\s+/).filter(Boolean).forEach(function(t){ zone.appendChild(zoneChip(zone, t)); });
     bSep.addEventListener("click",function(){ zone.appendChild(zoneChip(zone,"|")); zone.__sync(); });
     bClr.addEventListener("click",function(){ zone.innerHTML=""; zone.__sync(); });
+    function addCustom(){ var v=(inp.value||"").trim().replace(/\s+/g,""); if(!v) return; zone.appendChild(zoneChip(zone, v)); inp.value=""; zone.__sync(); }
+    bAdd.addEventListener("click", addCustom);
+    inp.addEventListener("keydown", function(ev){ if(ev.key==="Enter"){ ev.preventDefault(); addCustom(); } });
     document.addEventListener("tmce:plugins", function(){
       [].slice.call(zone.children).forEach(function(c){ var t=c.dataset.token; if(t!=="|" && !pluginEnabled(t)) c.remove(); });
       zone.__sync();
