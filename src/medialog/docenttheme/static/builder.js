@@ -33,7 +33,7 @@
     blockquote:["Blockquote","Paragraph"], ltr:["Left-to-right","Paragraph"], rtl:["Right-to-left","Paragraph"],
     plonelink:["Link (Plone)","Insert"], ploneimage:["Image (Plone)","Insert"], link:["Link","Insert"], unlink:["Unlink","Insert"], image:["Image","Insert"],
     media:["Media","Insert"], inserttable:["Table","Insert"], accordion:["Accordion","Insert"], charmap:["Special character","Insert"], emoticons:["Emoji","Insert"],
-    hr:["Horizontal rule","Insert"], pagebreak:["Page break","Insert"], insertdatetime:["Date/time","Insert"], anchor:["Anchor","Insert"],
+    hr:["Horizontal rule","Insert"], pagebreak:["Page break","Insert"], insertdatetime:["Date/time","Insert"], anchor:["Anchor","Insert"], codesample:["Code sample","Insert"],
     searchreplace:["Find & replace","Tools"], code:["Source code","Tools"], preview:["Preview","Tools"], fullscreen:["Fullscreen","Tools"],
     visualblocks:["Show blocks","Tools"], visualchars:["Show invisibles","Tools"], wordcount:["Word count","Tools"], help:["Help","Tools"],
     print:["Print","Tools"], save:["Save","Tools"]
@@ -65,6 +65,10 @@
   };
   function enabledPlugins(){ var s={}; [].forEach.call(document.querySelectorAll('input[type="checkbox"][name*="plugins" i]'), function(c){ if(c.checked) s[c.value]=true; }); return s; }
   function pluginEnabled(token){ var p=PLUGIN_OF[token]; if(!p) return true; return !!enabledPlugins()[p]; }
+  /* token's providing plugin is ticked? (PLUGIN_OF mapping, or the token name
+     itself is a plugin, e.g. accordion/anchor/code/codesample). Lets us offer a
+     button as soon as its plugin is enabled, before discovery has captured it. */
+  function tokenPluginOn(token){ var en=enabledPlugins(); var p=PLUGIN_OF[token]; if(p&&en[p]) return true; return !!en[token]; }
 
   /* ---- A) capture the real registry from an already-open editor ---- */
   function signatureOf(reg){ return Object.keys(reg.buttons||{}).sort().join(","); }
@@ -113,7 +117,7 @@
     var d=discovered(), icons=(d&&d.icons)||{}, dbtn=(d&&d.buttons)||{}, dmi=(d&&d.menuItems)||{}, out={};
     var filter = !!(d && (d.buttons || d.menuItems));
     Object.keys(TOOLBAR).forEach(function(t){
-      if(filter && !dbtn[t] && !dmi[t] && !ALWAYS_TB[t]) return;
+      if(filter && !dbtn[t] && !dmi[t] && !ALWAYS_TB[t] && !tokenPluginOn(t)) return;
       var iname=(dbtn[t]&&dbtn[t].icon)||(dmi[t]&&dmi[t].icon)||t;
       out[t]={label:TOOLBAR[t][0], group:TOOLBAR[t][1], icon:icons[iname]||icons[t]||""};
     });
