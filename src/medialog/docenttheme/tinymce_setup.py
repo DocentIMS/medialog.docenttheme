@@ -82,11 +82,18 @@ def repair_registry_fields(registry):
         rec_name = "plone." + fname
         if rec_name not in registry.records:
             continue
-        new_field = IPersistentField(ITinyMCESchema[fname])
-        new_field.interfaceName = "plone.base.interfaces.ITinyMCESchema"
-        new_field.fieldName = fname
-        registry.records[rec_name].field = new_field
-        logger.info("Repaired TinyMCE registry field %s.", rec_name)
+        # Best-effort: on newer plone.registry (>=3) this assignment can raise
+        # "The record's field must be an IPersistentField." for some field types.
+        # A field-repair failure must NOT abort the whole theme install
+        # (DocentIMS.TinyMCEModifications performs this repair properly too).
+        try:
+            new_field = IPersistentField(ITinyMCESchema[fname])
+            new_field.interfaceName = "plone.base.interfaces.ITinyMCESchema"
+            new_field.fieldName = fname
+            registry.records[rec_name].field = new_field
+            logger.info("Repaired TinyMCE registry field %s.", rec_name)
+        except Exception as e:
+            logger.warning("Skipped TinyMCE field repair for %s: %s", rec_name, e)
 
 
 def apply_preset(registry):
