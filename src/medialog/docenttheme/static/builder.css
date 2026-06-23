@@ -36,3 +36,9 @@
 .tmce-chip__ic svg { width:18px; height:18px; }
 .tmce-refresh { float:right; font-size:11px; color:#0a64a4; cursor:pointer; text-decoration:underline; }
 .tmce-builder__head--fallback { color:#9a6700; }
+/* plugins checkbox list -> grid */
+.tmce-plugrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:1px 16px; margin-top:6px; }
+.tmce-plugrid .form-check { margin:0; padding:3px 6px; border-radius:5px; }
+.tmce-plugrid .form-check:hover { background:#f1f7fb; }
+.tmce-plug-star { color:#c0392b; font-weight:700; margin-left:4px; }
+.tmce-plugnote { font-size:12px; color:#52606d; margin:10px 0 2px; }

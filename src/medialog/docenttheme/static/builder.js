@@ -260,9 +260,32 @@
     serialize();
   }
 
+  /* ---- B0) Plugins checkbox list -> tidy grid (per the layout doc) ---- */
+  var NOICON = { advlist:1, autolink:1, directionality:1, importcss:1, nonbreaking:1, quickbars:1 };
+  function enhancePlugins(){
+    var box=document.getElementById("form-widgets-plugins");
+    if(!box || box.__tmcePlug) return;
+    var checks=[].slice.call(box.querySelectorAll(".form-check"));
+    if(!checks.length) return;
+    box.__tmcePlug=true;
+    box.classList.add("tmce-plugrid");
+    checks.forEach(function(fc){
+      var cb=fc.querySelector('input[type="checkbox"]');
+      if(cb && NOICON[cb.value]){
+        fc.classList.add("tmce-plug--noicon");
+        var lab=fc.querySelector("label.form-check-label")||fc.querySelector("label");
+        if(lab && !lab.querySelector(".tmce-plug-star")) lab.appendChild(el("span","tmce-plug-star","*"));
+      }
+    });
+    var note=el("div","tmce-plugnote");
+    note.innerHTML='<span class="tmce-plug-star">*</span> These plugins do not have a toolbar icon to add to the toolbar.';
+    box.parentNode.insertBefore(note, box.nextSibling);
+  }
+
   function boot(){
     pollCapture();                                  // job A — runs on any page; cheap, cached
     if(!/tinymce-controlpanel/.test(location.href)) return;   // job B — control panel only
+    enhancePlugins();
     var tb=document.querySelector('textarea[id*="toolbar" i], textarea[name*="toolbar" i]'); if(tb) enhanceToolbar(tb);
     var mb=document.querySelector('input[id*="menubar" i], input[name*="menubar" i]'); if(mb) enhanceMenubar(mb);
     var menu=null;
