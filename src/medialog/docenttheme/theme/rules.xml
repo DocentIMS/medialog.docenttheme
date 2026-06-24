@@ -18,6 +18,18 @@
     <link href="{$portal_url}/++plone++DocentIMS.ActionItems/css/tinymce-formats.css" rel="stylesheet" type="text/css" />
   </after>
 
+  <!-- DocentIMS: grey out and disable the "Add New User" button on the
+       Users control panel (@@usergroup-userprefs). Visual + unclickable. -->
+  <after css:theme-children="head">
+    <style type="text/css">
+      #add-user {
+        pointer-events: none !important;
+        opacity: 0.5 !important;
+        cursor: not-allowed !important;
+      }
+    </style>
+  </after>
+
 
 
 <rules css:if-content="body.viewpermission-add-portal-content">
