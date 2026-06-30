@@ -42,7 +42,7 @@ jobs:
                   echo "eggs-directory = $HOME/buildout-cache/eggs" >> $HOME/.buildout/default.cfg
 
             - name: Install buildout
-              run: pip install zc.buildout
+              run: pip install "zc.buildout==4.1.4"
 
             - name: Run buildout
               run: buildout -c test_plone60.cfg
