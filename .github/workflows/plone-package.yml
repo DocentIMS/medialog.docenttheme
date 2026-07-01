@@ -44,7 +44,7 @@ jobs:
             - name: Install buildout
               run: |
                   python -m venv .venv
-                  .venv/bin/pip install "zc.buildout==4.1.4"
+                  .venv/bin/pip install "zc.buildout==4.1.4" "zope.interface==7.2" "z3c.jbot"
 
             - name: Run buildout
               run: .venv/bin/buildout -c test_plone60.cfg
