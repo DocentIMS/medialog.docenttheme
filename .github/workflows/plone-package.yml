@@ -49,8 +49,5 @@ jobs:
             - name: Run buildout
               run: .venv/bin/buildout -c test_plone60.cfg
 
-            - name: Ensure z3c.jbot is importable
-              run: .venv/bin/pip install --no-deps "z3c.jbot"
-
             - name: Run tests
               run: bin/test
