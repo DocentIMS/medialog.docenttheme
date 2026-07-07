@@ -42,8 +42,14 @@
 
   <!-- -*- extra stuff goes here -*- -->
 
-  <!-- TinyMCE Phase 1: 'Other settings' override guardrail -->
-  <adapter factory=".validators.OtherSettingsValidator" />
+  <!-- TinyMCE Phase 1: 'Other settings' override guardrail.
+       NOTE: do NOT register .validators.OtherSettingsValidator here.
+       DocentIMS.TinyMCEModifications already registers an identical
+       z3c.form widget validator for ITinyMCEAdvancedSchema['other_settings'],
+       and a second registration with the same discriminator raises a ZCML
+       ConfigurationConflictError at Zope startup on any site that has both
+       products installed (as the DocentIMS deployments do). The validator
+       module here is kept for reference/standalone use only. -->
 
   <!-- TinyMCE Phase 1: repair drift + apply standard preset (existing sites) -->
   <genericsetup:upgradeStep
