@@ -282,9 +282,32 @@
     box.parentNode.insertBefore(note, box.nextSibling);
   }
 
+  /* ---- B0b) "Style Settings" tab -> the WYSIWYG panel (TinyMCE Styles) ---- */
+  function portalUrl(){
+    var b=document.body, u=b && (b.getAttribute("data-portal-url")||b.getAttribute("data-base-url"));
+    if(u) return u.replace(/\/$/,"");
+    return location.href.replace(/\/@@.*$/,"");
+  }
+  function addStyleTab(n){
+    n=n||0;
+    var links=document.querySelectorAll('a[href^="#autotoc-item"]');
+    if(!links.length){ if(n<40) setTimeout(function(){ addStyleTab(n+1); }, 250); return; }
+    var nav=links[0].parentNode;
+    if(nav.__tmceStyleTab) return;
+    nav.__tmceStyleTab=true;
+    var ref=links[links.length-1];                  // copy a non-active tab's styling
+    var a=el("a", ref.className, "Style Settings");
+    ["active","selected","current","autotoc-active"].forEach(function(c){ a.classList.remove(c); });
+    a.href=portalUrl()+"/@@docent-style-settings";
+    a.title="Base fonts, headings and table styles (WYSIWYG)";
+    a.setAttribute("data-tmce-styletab","1");
+    nav.appendChild(a);
+  }
+
   function boot(){
     pollCapture();                                  // job A — runs on any page; cheap, cached
     if(!/tinymce-controlpanel/.test(location.href)) return;   // job B — control panel only
+    addStyleTab();
     enhancePlugins();
     var tb=document.querySelector('textarea[id*="toolbar" i], textarea[name*="toolbar" i]'); if(tb) enhanceToolbar(tb);
     var mb=document.querySelector('input[id*="menubar" i], input[name*="menubar" i]'); if(mb) enhanceMenubar(mb);
