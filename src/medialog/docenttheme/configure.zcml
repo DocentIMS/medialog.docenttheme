@@ -43,6 +43,7 @@
   <!-- -*- extra stuff goes here -*- -->
 
   <!-- TinyMCE Phase 1: 'Other settings' override guardrail -->
+  <adapter factory=".validators.OtherSettingsValidator" />
 
   <!-- TinyMCE Phase 1: repair drift + apply standard preset (existing sites) -->
   <genericsetup:upgradeStep
@@ -54,13 +55,9 @@
       handler=".upgrades.upgrade_tinymce_1001"
       />
 
-  <!-- TinyMCE Phase 3: self-hosted toolbar-builder assets + bundle -->
-  <plone:static
-      directory="static"
-      type="plone"
-      name="medialog.docenttheme"
-      />
-
+  <!-- TinyMCE Phase 3: register the self-hosted toolbar-builder bundle.
+       The ++plone++medialog.docenttheme static resource is registered once
+       in browser/configure.zcml; do not re-register it here. -->
   <genericsetup:upgradeStep
       source="1001"
       destination="1002"
