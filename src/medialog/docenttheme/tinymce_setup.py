@@ -2,9 +2,12 @@
 """Standardised TinyMCE configuration for DocentIMS sites.
 
 Rebinds the managed TinyMCE registry fields to their current schema
-definition (fixing type drift such as menubar List->TextLine, and stale
-vocabularies such as plugins gaining accordion), then applies a standard
-editor preset. Safe to run repeatedly.
+definition (the ``menubar`` field type differs across Plone versions -
+``schema.List`` on Plone 6.0 / plone.base 1.x, ``schema.TextLine`` on
+Plone 6.1+ / plone.base 4.x - and vocabularies drift, e.g. plugins gaining
+accordion), then applies a standard editor preset. ``apply_preset`` coerces
+each value to the record's actual field type, so it stays valid regardless
+of which schema is installed. Safe to run repeatedly.
 
 We deliberately rebind only the fields this preset writes, rather than
 calling registry.registerInterface(ITinyMCESchema). A full-schema refresh
