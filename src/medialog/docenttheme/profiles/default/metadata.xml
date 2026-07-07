@@ -4,7 +4,14 @@
   <dependencies>
     <dependency>profile-plone.app.theming:default</dependency>
     <dependency>profile-plone.app.dexterity:default</dependency>
-    <dependency>profile-DocentIMS.ActionItems:default</dependency>
-    <dependency>profile-DocentIMS.ActionItems:portlets</dependency>
+    <!--
+      DocentIMS.ActionItems is not declared as an install dependency here.
+      The theme only reads ActionItems' settings opportunistically (the
+      header viewlet uses api.portal.get_registry_record(..., None) and
+      rules.xml links an ActionItems static resource), so it degrades
+      gracefully when ActionItems is absent. Hard-requiring ActionItems'
+      profiles coupled the theme to a private package and blocked it from
+      installing / being tested standalone. Install ActionItems separately.
+    -->
   </dependencies>
 </metadata>

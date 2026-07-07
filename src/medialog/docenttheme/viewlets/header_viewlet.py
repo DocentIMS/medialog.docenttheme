@@ -11,10 +11,14 @@ class HeaderViewlet(ViewletBase):
         self.color = self.get_color()
 
     def get_message(self):
-        return api.portal.get_registry_record('DocentIMS.ActionItems.interfaces.IDocentimsSettings.project_title', None)
-                    
+        return api.portal.get_registry_record(
+            'DocentIMS.ActionItems.interfaces.IDocentimsSettings.project_title',
+            default=None)
+
     def get_color(self):
-        return api.portal.get_registry_record('DocentIMS.ActionItems.interfaces.IDocentimsSettings.color1', None) 
+        return api.portal.get_registry_record(
+            'DocentIMS.ActionItems.interfaces.IDocentimsSettings.color1',
+            default=None)
                    
     def index(self):
         return super(HeaderViewlet, self).render()

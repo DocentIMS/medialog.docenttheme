@@ -96,17 +96,49 @@ def repair_registry_fields(registry):
             logger.warning("Skipped TinyMCE field repair for %s: %s", rec_name, e)
 
 
+def _coerce_to_field(record, value):
+    """Coerce a preset value to the record field's actual type.
+
+    The managed TinyMCE fields changed type across Plone versions - e.g.
+    ``menubar`` is a ``schema.List`` on Plone 6.0 (plone.base 1.x) but a
+    ``schema.TextLine`` on Plone 6.1+ (plone.base 4.x). Rather than assume a
+    single schema, look at the record's field: if it is a collection, express
+    the value as a list of space-separated tokens; otherwise as a plain
+    string. This keeps the preset valid on both schemas.
+    """
+    field = getattr(record, "field", None)
+    is_collection = field is not None and hasattr(field, "value_type")
+    if is_collection:
+        if isinstance(value, str):
+            return value.split()
+        return list(value)
+    # Scalar (TextLine/Text) field.
+    if isinstance(value, (list, tuple)):
+        return " ".join(value)
+    return value
+
+
+def _write(registry, name, value):
+    """Set a registry record, coercing to its field type. Never fatal.
+
+    A single field's type mismatch must not abort the whole theme install
+    (the authoritative repair lives in DocentIMS.TinyMCEModifications).
+    """
+    record = registry.records.get(name)
+    if record is None:
+        return
+    try:
+        registry[name] = _coerce_to_field(record, value)
+    except Exception as e:
+        logger.warning("Skipped TinyMCE preset write for %s: %s", name, e)
+
+
 def apply_preset(registry):
     """Write the standardised TinyMCE preset values."""
-    records = registry.records
-    if "plone.menubar" in records:
-        registry["plone.menubar"] = MENUBAR
-    if "plone.toolbar" in records:
-        registry["plone.toolbar"] = TOOLBAR
-    if "plone.plugins" in records:
-        registry["plone.plugins"] = list(PLUGINS)
-    if "plone.other_settings" in records:
-        registry["plone.other_settings"] = json.dumps(OTHER_SETTINGS)
+    _write(registry, "plone.menubar", MENUBAR)
+    _write(registry, "plone.toolbar", TOOLBAR)
+    _write(registry, "plone.plugins", list(PLUGINS))
+    _write(registry, "plone.other_settings", json.dumps(OTHER_SETTINGS))
     logger.info("TinyMCE standardised preset applied.")
 
 

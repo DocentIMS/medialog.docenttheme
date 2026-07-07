@@ -6,7 +6,9 @@ on:
         branches: [master, main]
     pull_request:
         branches: [master, main]
+
     workflow_dispatch:
+
 
 jobs:
     build:
@@ -42,10 +44,12 @@ jobs:
                   echo "eggs-directory = $HOME/buildout-cache/eggs" >> $HOME/.buildout/default.cfg
 
             - name: Install buildout
-              run: pip install "zc.buildout==4.1.4"
+              run: |
+                  python -m venv .venv
+                  .venv/bin/pip install "zc.buildout==4.1.4"
 
             - name: Run buildout
-              run: buildout -c test_plone60.cfg
+              run: .venv/bin/buildout -c test_plone60.cfg
 
             - name: Run tests
               run: bin/test
