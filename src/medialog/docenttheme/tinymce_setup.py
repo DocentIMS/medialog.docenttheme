@@ -21,7 +21,7 @@ from zope.component import getUtility
 
 logger = logging.getLogger("medialog.docenttheme")
 
-MENUBAR = "edit table format tools view insert"
+MENUBAR = ["edit", "table", "format", "tools", "view", "insert"]
 
 TOOLBAR = (
     "ltr rtl | undo redo | styles | bold italic | "
