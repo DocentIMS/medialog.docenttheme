@@ -1,23 +1,13 @@
 .flex {display: flex;   justify-content: space-between;}
 
-// Plone's IPortalHeader holds BOTH the personal-tools user menu and the grey
-// #toolbar, and the theme (rules.xml) drops them together into #portal-top.
-// Laid out as a flex row they collide -- the full-width toolbar overlaps the
-// user icon at its right end. Stack them instead: the user icon sits in the
-// header's top-right, and the toolbar spans full width beneath it. Cap the
-// width so the icon tracks the content column rather than the viewport edge
-// on wide screens (issue #68).
-#portal-top {
-  flex-direction: column !important;
-  align-items: flex-end !important;
-  justify-content: flex-start !important;
-  max-width: 1680px;
-  margin: auto;
-}
-#portal-top > #toolbar {
-  order: 2;
-  width: 100%;
-  align-self: stretch;
+// issue #68 DIAGNOSTIC: hide the personal-tools user icon so we can see whether
+// the grey #toolbar renders correctly on its own (without the icon overlapping
+// its right/Help-Center end). Targets the standard Plone personal-tools id and,
+// as a backup, any non-#toolbar child of #portal-top.
+#portal-personaltools,
+#portal-personaltools-wrapper,
+#portal-top > *:not(#toolbar) {
+  display: none !important;
 }
 
 h2 {
