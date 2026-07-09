@@ -5,6 +5,12 @@ Changelog
 1.0a1 (unreleased)
 ------------------
 
+- Drop the two external Google Fonts ``@import`` lines from the production
+  stylesheet (Open Sans, Roboto Slab, Bitter, Encode Sans). They pulled ~76 KiB
+  of webfonts from ``fonts.gstatic.com`` and, being ``@import`` rules inside the
+  stylesheet, were render-blocking. The theme's own font is Roboto (already on
+  the system-font stack), so affected elements fall back to that stack. [docentims]
+
 - Fix the ``++plone++medialog.docenttheme`` static resource directory. The
   ``<plone:static>`` registration in ``browser/configure.zcml`` used
   ``directory="static"``, which resolves relative to ``browser/`` (an empty
