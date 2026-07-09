@@ -5,15 +5,15 @@ Changelog
 1.0a1 (unreleased)
 ------------------
 
-- Fix the personal-tools user icon drifting off the toolbar on wide screens.
-  ``#portal-top`` (which holds the logged-in user's icon/name) is right-aligned
-  inside the full-width header, so without a max-width it slid to the far right
-  edge on large monitors and detached from the grey toolbar; on smaller screens
-  it overlapped the "Select Doc Type" block. Restore the
-  ``#portal-top {max-width: 1680px; margin: auto}`` / ``#toolbar {margin: auto}``
-  rules (present in the source ``styles/custom.scss`` and appended to the
-  compiled ``styles/theme.css`` / ``styles/theme.min.css``) so both stay within
-  the content column. [docentims]
+- Fix the personal-tools user icon colliding with the grey toolbar. Plone's
+  ``IPortalHeader`` holds both the personal-tools user menu and the
+  ``DocentIMS.ActionItems`` ``#toolbar``, and ``rules.xml`` merges them into
+  ``#portal-top``; laid out as a flex row the full-width toolbar overlapped the
+  user icon at its right end (and the icon drifted off on wide screens). Lay
+  ``#portal-top`` out as a flex column so the user icon sits in the header's
+  top-right above the full-width toolbar, capped to the content-column width.
+  Added to the source ``styles/custom.scss`` and the compiled
+  ``styles/theme.css`` / ``styles/theme.min.css``. [docentims]
 
 - Drop the two external Google Fonts ``@import`` lines from the production
   stylesheet (Open Sans, Roboto Slab, Bitter, Encode Sans). They pulled ~76 KiB
