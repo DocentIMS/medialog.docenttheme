@@ -5,6 +5,13 @@ Changelog
 1.0a1 (unreleased)
 ------------------
 
+- Fix the ``++plone++medialog.docenttheme`` static resource directory. The
+  ``<plone:static>`` registration in ``browser/configure.zcml`` used
+  ``directory="static"``, which resolves relative to ``browser/`` (an empty
+  folder), so ``builder.css``, ``builder.js`` and ``tiny-extras.js`` -- which
+  live in the package-root ``static/`` -- 404'd on every page. Point it at
+  ``../static``. [docentims]
+
 - Serve a minified production stylesheet. ``manifest.cfg`` now points
   ``production-css``/``tinymce-content-css`` at ``styles/theme.min.css``
   (~287 KiB) instead of the expanded ``styles/theme.css`` (~1.05 MB),

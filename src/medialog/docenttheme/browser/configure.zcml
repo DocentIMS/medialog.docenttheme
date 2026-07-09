@@ -11,11 +11,15 @@
       layer="medialog.docenttheme.interfaces.IMedialogDocentthemeLayer"
       />
 
-  <!-- Publish static files -->
+  <!-- Publish static files. directory is relative to THIS zcml (browser/), but
+       the resources (builder.css/js, tiny-extras.js) live in the package root's
+       static/, so point one level up. Without the ../ this published the empty
+       browser/static/ and every ++plone++medialog.docenttheme/builder.* request
+       404'd. -->
   <plone:static
       name="medialog.docenttheme"
       type="plone"
-      directory="static"
+      directory="../static"
       />
 
 </configure>
