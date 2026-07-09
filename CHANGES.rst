@@ -5,6 +5,16 @@ Changelog
 1.0a1 (unreleased)
 ------------------
 
+- Fix the personal-tools user icon drifting off the toolbar on wide screens.
+  ``#portal-top`` (which holds the logged-in user's icon/name) is right-aligned
+  inside the full-width header, so without a max-width it slid to the far right
+  edge on large monitors and detached from the grey toolbar; on smaller screens
+  it overlapped the "Select Doc Type" block. Restore the
+  ``#portal-top {max-width: 1680px; margin: auto}`` / ``#toolbar {margin: auto}``
+  rules (present in the source ``styles/custom.scss`` and appended to the
+  compiled ``styles/theme.css`` / ``styles/theme.min.css``) so both stay within
+  the content column. [docentims]
+
 - Drop the two external Google Fonts ``@import`` lines from the production
   stylesheet (Open Sans, Roboto Slab, Bitter, Encode Sans). They pulled ~76 KiB
   of webfonts from ``fonts.gstatic.com`` and, being ``@import`` rules inside the

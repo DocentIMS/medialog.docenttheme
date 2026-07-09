@@ -1,5 +1,12 @@
 .flex {display: flex;   justify-content: space-between;}
 
+// Keep the personal-tools (user icon/name) and the toolbar anchored to the
+// content column instead of the full viewport edge. Without the max-width the
+// right-aligned #portal-top drifts to the far right on wide screens, so the
+// user icon detaches from the toolbar (issue #68).
+#portal-top {max-width: 1680px; margin: auto}
+#toolbar {margin: auto;}
+
 h2 {
 	border-bottom: solid 3px #f56a6a;
 	margin: 0 0 2em 0;
