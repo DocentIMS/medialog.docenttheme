@@ -1,13 +1,20 @@
 .flex {display: flex;   justify-content: space-between;}
 
-// issue #68 DIAGNOSTIC: hide the personal-tools user icon so we can see whether
-// the grey #toolbar renders correctly on its own (without the icon overlapping
-// its right/Help-Center end). Targets the standard Plone personal-tools id and,
-// as a backup, any non-#toolbar child of #portal-top.
-#portal-personaltools,
-#portal-personaltools-wrapper,
+// issue #68: the personal-tools user icon is merged into #portal-top next to
+// the grey #toolbar (Plone IPortalHeader -> rules.xml), so in normal flow it
+// lands on the toolbar's Help-Center end and overlaps it. Take the icon out of
+// flow and pin it to the header's top-right corner (where it belongs); the
+// toolbar then renders full-width and unobstructed. Same selector that the
+// diagnostic proved targets the icon.
+#content-header {
+  position: relative;
+}
 #portal-top > *:not(#toolbar) {
-  display: none !important;
+  position: absolute;
+  top: 0.75rem;
+  right: 2rem;
+  margin: 0;
+  z-index: 5;
 }
 
 h2 {
