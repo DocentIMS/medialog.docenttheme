@@ -106,6 +106,42 @@
     <div class="container align-center black">© Copyright Docent IMS LLC  2025</div>
   </footer>
 
+  <!-- Docent app-window helper: when this site is viewed inside the installed
+       Docent Dashboard app (chromeless window), keep navigation in the app
+       window by retargeting target=_blank links on click. Normal browser tabs
+       are unaffected. Mirrors the kiosk-overlay viewlet in
+       DocentIMS.dashboard - keep the two in sync. -->
+  <script>
+    (function () {
+      "use strict";
+      var chromeless = false;
+      try {
+        if (window.menubar) {
+          chromeless = (window.menubar.visible === false);
+        }
+        if (!chromeless) {
+          if (window.matchMedia) {
+            if (window.matchMedia("(display-mode: standalone)").matches) { chromeless = true; }
+            if (window.matchMedia("(display-mode: minimal-ui)").matches) { chromeless = true; }
+            if (window.matchMedia("(display-mode: fullscreen)").matches) { chromeless = true; }
+          }
+        }
+      } catch (e) {
+        chromeless = false;
+      }
+      if (!chromeless) { return; }
+      document.addEventListener("click", function (ev) {
+        var el = ev.target;
+        if (!el.closest) { return; }
+        var a = el.closest("a[target='_blank']");
+        if (!a) { return; }
+        var href = a.getAttribute("href");
+        if (!href) { return; }
+        if (href.indexOf("http") !== 0) { return; }
+        a.setAttribute("target", "_self");
+      }, true);
+    }());
+  </script>
 
 </body>
 
