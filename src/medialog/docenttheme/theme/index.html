@@ -133,11 +133,15 @@
       document.addEventListener("click", function (ev) {
         var el = ev.target;
         if (!el.closest) { return; }
-        var a = el.closest("a[target='_blank']");
+        var a = el.closest("a[target]");
         if (!a) { return; }
+        if (a.getAttribute("target") === "_self") { return; }
         var href = a.getAttribute("href");
         if (!href) { return; }
-        if (href.indexOf("http") !== 0) { return; }
+        if (href.indexOf("#") === 0) { return; }
+        if (href.indexOf("javascript:") === 0) { return; }
+        if (href.indexOf("mailto:") === 0) { return; }
+        if (href.indexOf("tel:") === 0) { return; }
         a.setAttribute("target", "_self");
       }, true);
     }());
