@@ -106,6 +106,18 @@
     <div class="container align-center black">© Copyright Docent IMS LLC  2025</div>
   </footer>
 
+  <!-- Picture pages: no edit pencil. The Plone toolbar's Edit action on
+       Image content invites accidental edits; hide it for everyone (editing
+       stays possible via the /edit URL or the folder contents view).
+       Mirrors the same rule in DocentIMS.dashboard's dashboard.css. -->
+  <style>
+    body.portaltype-image #contentview-edit,
+    body.portaltype-image #toolbar-button-edit,
+    body.portaltype-image #edit-zone a[href$="/edit"] {
+      display: none !important;
+    }
+  </style>
+
   <!-- Docent app-window helper: when this site is viewed inside the installed
        Docent Dashboard app (chromeless window), keep navigation in the app
        window by retargeting target=_blank links on click. Normal browser tabs
