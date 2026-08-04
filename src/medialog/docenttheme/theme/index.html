@@ -136,7 +136,24 @@
            empty glyph but counts as a real title - an empty/whitespace one
            falls back to the app name or URL. Swap the favicon for a
            transparent pixel so the corner icon disappears too. */
-        document.title = "⠀";
+        var BLANK_TITLE = "⠀";
+        var enforceBlankTitle = function () {
+          if (document.title !== BLANK_TITLE) {
+            document.title = BLANK_TITLE;
+          }
+        };
+        enforceBlankTitle();
+        /* Site JS (e.g. the Alerts view) rewrites document.title after
+           load, which would put text back in the title bar - re-blank on
+           every change. Observing <head> survives the <title> node being
+           replaced; the equality check above stops observer loops. */
+        if (window.MutationObserver) {
+          if (document.head) {
+            new MutationObserver(enforceBlankTitle).observe(
+              document.head, { childList: true, characterData: true, subtree: true }
+            );
+          }
+        }
         var icons = document.querySelectorAll("link[rel*='icon']");
         var i = icons.length;
         while (i--) {
