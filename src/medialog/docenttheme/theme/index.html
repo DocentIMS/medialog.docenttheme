@@ -106,11 +106,12 @@
     <div class="container align-center black">© Copyright Docent IMS LLC  2025</div>
   </footer>
 
-  <!-- Docent app-window helper: when this site is viewed inside the installed
-       Docent Dashboard app (chromeless window), keep navigation in the app
-       window by retargeting target=_blank links on click. Normal browser tabs
-       are unaffected. Mirrors the kiosk-overlay viewlet in
-       DocentIMS.dashboard - keep the two in sync. -->
+  <!-- Docent app-window helper: when this site is viewed inside the Docent
+       Dashboard app window (chromeless: Edge app-mode shortcut or installed
+       app), (1) blank the title bar's text and icon, and (2) keep navigation
+       in the app window by retargeting window-opening links on click.
+       Normal browser tabs are unaffected. Mirrors the kiosk-overlay viewlet
+       in DocentIMS.dashboard - keep the two in sync. -->
   <script>
     (function () {
       "use strict";
@@ -130,6 +131,24 @@
         chromeless = false;
       }
       if (!chromeless) { return; }
+      try {
+        /* Blank the title bar text. U+2800 (braille blank) renders as an
+           empty glyph but counts as a real title - an empty/whitespace one
+           falls back to the app name or URL. Swap the favicon for a
+           transparent pixel so the corner icon disappears too. */
+        document.title = "⠀";
+        var icons = document.querySelectorAll("link[rel*='icon']");
+        var i = icons.length;
+        while (i--) {
+          icons[i].parentNode.removeChild(icons[i]);
+        }
+        var blank = document.createElement("link");
+        blank.rel = "icon";
+        blank.href = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+        document.head.appendChild(blank);
+      } catch (e2) {
+        /* cosmetic only - never block the page */
+      }
       document.addEventListener("click", function (ev) {
         var el = ev.target;
         if (!el.closest) { return; }
