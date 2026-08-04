@@ -186,7 +186,10 @@
       />
 
   <!-- toolbar -->
-  <replace css:theme="#portal-toolbar" css:content="#edit-bar" css:if-not-content=".ajax_load" css:if-content=".userrole-authenticated" />
+  <!-- #edit-zone is Plone 5/6's standard toolbar (collective.sidebar retired
+       2026-08); #edit-bar kept as a fallback for anything still emitting the
+       old id. -->
+  <replace css:theme="#portal-toolbar" css:content="#edit-zone" css:if-not-content=".ajax_load" css:if-content=".userrole-authenticated" />
   <drop css:theme="#portal-toolbar" css:if-content=".userrole-anonymous" />
   <!-- <replace css:theme="#anonymous-actions" css:content-children="#portal-personaltools-wrapper" css:if-not-content=".ajax_load" css:if-content=".userrole-anonymous" /> -->
 
