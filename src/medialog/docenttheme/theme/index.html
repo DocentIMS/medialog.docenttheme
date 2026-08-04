@@ -108,10 +108,11 @@
 
   <!-- Docent app-window helper: when this site is viewed inside the Docent
        Dashboard app window (chromeless: Edge app-mode shortcut or installed
-       app), (1) blank the title bar's text and icon, and (2) keep navigation
-       in the app window by retargeting window-opening links on click.
-       Normal browser tabs are unaffected. Mirrors the kiosk-overlay viewlet
-       in DocentIMS.dashboard - keep the two in sync. -->
+       app), (1) set the title bar text to the Project Short Name and blank
+       the icon, and (2) keep navigation in the app window by retargeting
+       window-opening links on click. Normal browser tabs are unaffected.
+       Mirrors the kiosk-overlay viewlet in DocentIMS.dashboard - keep the
+       two in sync. -->
   <script>
     (function () {
       "use strict";
@@ -132,24 +133,37 @@
       }
       if (!chromeless) { return; }
       try {
-        /* Blank the title bar text. U+2800 (braille blank) renders as an
-           empty glyph but counts as a real title - an empty/whitespace one
-           falls back to the app name or URL. Swap the favicon for a
-           transparent pixel so the corner icon disappears too. */
-        var BLANK_TITLE = "⠀";
-        var enforceBlankTitle = function () {
-          if (document.title !== BLANK_TITLE) {
-            document.title = BLANK_TITLE;
+        /* Title bar text: the Project Short Name (registry value served by
+           ActionItems' public @@project-short-name endpoint). A fully blank
+           title is impossible here - Edge shows URL text for cross-origin
+           pages with a blank title - so a real short title is the clean
+           option. Until the fetch resolves (or if the endpoint is missing)
+           the normal page title stays. An observer pins the fetched value
+           against site JS (e.g. the Alerts view) rewriting document.title;
+           the equality check stops observer loops. */
+        var appTitle = null;
+        var enforceAppTitle = function () {
+          if (appTitle) {
+            if (document.title !== appTitle) {
+              document.title = appTitle;
+            }
           }
         };
-        enforceBlankTitle();
-        /* Site JS (e.g. the Alerts view) rewrites document.title after
-           load, which would put text back in the title bar - re-blank on
-           every change. Observing <head> survives the <title> node being
-           replaced; the equality check above stops observer loops. */
+        if (window.fetch) {
+          fetch("/@@project-short-name", { credentials: "same-origin" })
+            .then(function (r) { return r.ok ? r.text() : ""; })
+            .then(function (text) {
+              text = (text || "").trim();
+              if (text) {
+                appTitle = text;
+                enforceAppTitle();
+              }
+            })
+            .catch(function () { /* keep the normal title */ });
+        }
         if (window.MutationObserver) {
           if (document.head) {
-            new MutationObserver(enforceBlankTitle).observe(
+            new MutationObserver(enforceAppTitle).observe(
               document.head, { childList: true, characterData: true, subtree: true }
             );
           }
