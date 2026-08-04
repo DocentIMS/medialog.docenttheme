@@ -132,6 +132,19 @@
         chromeless = false;
       }
       if (!chromeless) { return; }
+      /* Suppress the "Reload site? Changes you made may not be saved."
+         browser prompt in the app window: this early-registered listener
+         runs first, clears any handler assigned via window.onbeforeunload,
+         and stops later listeners from flagging the event. Normal tabs
+         keep their unsaved-changes protection. */
+      try {
+        window.addEventListener("beforeunload", function (ev) {
+          window.onbeforeunload = null;
+          ev.stopImmediatePropagation();
+        }, true);
+      } catch (e9) {
+        /* cosmetic only */
+      }
       try {
         /* Title bar text: the Project Short Name (registry value served by
            ActionItems' public @@project-short-name endpoint). A fully blank
