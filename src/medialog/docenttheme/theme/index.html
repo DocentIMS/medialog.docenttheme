@@ -108,7 +108,7 @@
 
   <!-- collective.sidebar retired (2026-08): its stylesheet - still served
        from the resource registry on already-built sites - zeroes the Plone
-       toolbar via ':root { --plone-toolbar-width: 0 !important }'. Restore
+       toolbar by zeroing the plone-toolbar-width CSS variable. Restore
        the standard widths; this block sits later in the document, so it wins
        at equal specificity. Safe to remove once the sidebar bundle is
        deregistered everywhere. -->
