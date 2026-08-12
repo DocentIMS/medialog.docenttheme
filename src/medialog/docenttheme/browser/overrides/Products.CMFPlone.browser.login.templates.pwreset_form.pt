@@ -17,11 +17,26 @@
   "My user name is" field with that value and lock it (readonly), so the
   invitee does not have to know / retype their own username.
 
-  Only the two userid/email <input>s differ from upstream: they gain a
-  `value` bound to request/userid and become readonly *only when* that value
-  is present. Self-service "forgot password" links carry no ?userid= (see
-  PasswordResetToolView.construct_url), so on those the field stays empty and
-  editable exactly as before, leaving the self-service flow unaffected.
+  Only the userid/email field differs from upstream.
+
+  It used to read request/userid and go readonly when that was present. That
+  left the self-service "forgot password" flow with an EMPTY box, because
+  those links carry no ?userid= (see PasswordResetToolView.construct_url) -
+  and an empty box named "userid" is exactly what a browser password manager
+  fills, with whatever login is saved for the site. People arrived here with
+  "admin" in the field. readonly does not stop autofill.
+
+  The token in the URL already identifies the account, so the name now comes
+  from @@docent-pwreset-userid (DocentIMS.ActionItems) and renders as a
+  hidden input plus plain text - autofill cannot touch a hidden input. Where
+  there is no usable token the box stays visible and editable, since the
+  visitor then has to identify themselves.
+
+  NOTE: DocentIMS.ActionItems ships a jbot override of this same Plone
+  template. Both are layer-gated and only one can win; on a themed project
+  site it is this one. Keep the two in step - a fix applied to only one of
+  them renders to nothing, which is exactly how the autofill bug survived
+  three rounds of "fixes".
 -->
 
 <metal:custom_title fill-slot="content-title">
@@ -53,45 +68,51 @@
                     <div class="mb-3 field"
                          tal:define="error errors/userid | nothing;
                                      use_email_as_login python:context.portal_registry['plone.use_email_as_login'];
-                                     prefill request/userid | request/form/userid | nothing;"
+                                     lookup python:context.restrictedTraverse('@@docent-pwreset-userid', None);
+                                     known_userid python:lookup and lookup() or '';
+                                     prefill python:known_userid or request.get('userid', '');"
                          tal:attributes="class python:error and 'mb-3 field error' or 'mb-3 field'"
                          tal:condition="here/portal_password_reset/checkUser | nothing">
 
-                      <tal:username tal:condition="not:use_email_as_login">
-                        <label class="form-label" for="userid"
-                               i18n:translate="label_my_user_name_is">My user name is</label>
+                      <label class="form-label" for="userid"
+                             tal:condition="not:use_email_as_login"
+                             i18n:translate="label_my_user_name_is">My user name is</label>
+                      <label class="form-label required" for="userid"
+                             tal:condition="use_email_as_login"
+                             i18n:translate="label_my_email_address_is">My email address is</label>
 
+                      <!-- Known account: submit it hidden and show it as
+                           text. A hidden input is the one thing a password
+                           manager will not overwrite; a readonly text input
+                           is not - that is how "admin" got in. -->
+                      <tal:known tal:condition="prefill">
+                        <input type="hidden" name="userid" id="userid"
+                               tal:attributes="value prefill" />
+                        <p class="form-control-plaintext" id="userid-display"
+                           tal:content="prefill">someone</p>
+                      </tal:known>
+
+                      <tal:unknown tal:condition="not:prefill">
                         <input class="form-control"
                             name="userid"
-                            required
+                            required="required"
                             id="userid"
-                            tal:attributes="value prefill;
-                                            readonly python:'readonly' if prefill else None" />
+                            autocomplete="off"
+                            value="" />
+                      </tal:unknown>
 
-                        <div tal:content="error" class="invalid-feedback">Validation error output</div>
+                      <div tal:content="error" class="invalid-feedback">Validation error output</div>
 
-                        <small class="formHelp text-muted" i18n:translate="help_userid">
-                            Enter your user name for verification.
-                        </small>
-                      </tal:username>
-
-                      <tal:email tal:condition="use_email_as_login">
-                        <label class="form-label required" for="userid"
-                               i18n:translate="label_my_email_address_is">My email address is</label>
-
-                        <input class="form-control"
-                            name="userid"
-                            required
-                            id="userid"
-                            tal:attributes="value prefill;
-                                            readonly python:'readonly' if prefill else None" />
-
-                        <div tal:content="error" class="invalid-feedback">Validation error output</div>
-
-                        <small class="formHelp text-muted" i18n:translate="help_verify_email">
-                            Enter your email address for verification.
-                        </small>
-                      </tal:email>
+                      <small class="formHelp text-muted"
+                             tal:condition="not:use_email_as_login"
+                             i18n:translate="help_userid">
+                          Enter your user name for verification.
+                      </small>
+                      <small class="formHelp text-muted"
+                             tal:condition="use_email_as_login"
+                             i18n:translate="help_verify_email">
+                          Enter your email address for verification.
+                      </small>
 
                     </div>
 
@@ -106,7 +127,7 @@
                             type="password"
                             id="password"
                             name="password"
-                            required
+                            required="required"
                             size="10" />
 
                         <div tal:content="error" class="invalid-feedback">Validation error output</div>
@@ -129,7 +150,7 @@
                             type="password"
                             id="password2"
                             name="password2"
-                            required
+                            required="required"
                             size="10"
                             />
 
