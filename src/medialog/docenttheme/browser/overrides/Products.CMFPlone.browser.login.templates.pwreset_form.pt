@@ -103,13 +103,17 @@
 
                       <div tal:content="error" class="invalid-feedback">Validation error output</div>
 
+                      <!-- Only when there is something to enter. With the
+                           account named from the token there is no field to
+                           fill, so "Enter your user name for verification"
+                           was instructing the visitor to do nothing. -->
                       <small class="formHelp text-muted"
-                             tal:condition="not:use_email_as_login"
+                             tal:condition="python:not prefill and not use_email_as_login"
                              i18n:translate="help_userid">
                           Enter your user name for verification.
                       </small>
                       <small class="formHelp text-muted"
-                             tal:condition="use_email_as_login"
+                             tal:condition="python:not prefill and use_email_as_login"
                              i18n:translate="help_verify_email">
                           Enter your email address for verification.
                       </small>
