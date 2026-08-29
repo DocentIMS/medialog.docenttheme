@@ -422,3 +422,81 @@ form.rowlike:not(.ai-submitted) .form-select:invalid {
     font-weight: 600;
     color: #44506a;
 }
+
+/* --------------------------------------------------- Add Task: chips
+
+   The Add Task form asks for the five fields a task cannot exist without
+   and offers the rest as chips (action_items.js builds them). This is the
+   appearance only - the script writes its own display rules, so an older
+   copy of this file leaves the chips unstyled rather than leaving fields
+   hidden with no way to reach them. */
+
+.ai-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 6px;
+    padding-top: 22px;
+    border-top: 1px solid var(--docent-line);
+}
+
+.ai-chip {
+    font-size: var(--docent-label-size);
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--docent-accent);
+    background: #fff;
+    border: 1px solid #e0d2d7;
+    border-radius: 18px;
+    padding: 9px 16px;
+    cursor: pointer;
+}
+
+.ai-chip:hover {
+    background: #f7eef1;
+}
+
+.ai-chip:focus-visible {
+    outline: 2px solid var(--docent-accent);
+    outline-offset: 2px;
+}
+
+/* Open reads as filled, the way the ribbon's current section does. */
+.ai-chip[aria-pressed="true"] {
+    background: var(--docent-accent);
+    border-color: var(--docent-accent);
+    color: #fff;
+}
+
+/* The way out of the chips is not one of the chips. */
+.ai-chip-all {
+    margin-left: auto;
+    color: var(--docent-muted);
+    border-color: var(--docent-line);
+    font-weight: 500;
+}
+
+.ai-chips-help {
+    color: var(--docent-muted);
+    font-size: var(--docent-label-size);
+    margin: 13px 0 0;
+}
+
+/* Fields opened by a chip land here, under the row that opened them. */
+.ai-chips-opened {
+    display: flex;
+    flex-direction: column;
+    gap: var(--docent-field-gap);
+    margin-top: var(--docent-field-gap);
+}
+
+.ai-chips-opened:empty {
+    margin-top: 0;
+}
+
+/* A sheet's own description, carried onto the chip that opens it. */
+.ai-chips-note {
+    color: var(--docent-muted);
+    font-size: var(--docent-label-size);
+    margin: 0;
+}
