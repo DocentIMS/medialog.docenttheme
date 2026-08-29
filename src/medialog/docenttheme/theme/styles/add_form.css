@@ -200,6 +200,28 @@ div.mb-3 select[multiple] {
     padding: 6px 8px;
 }
 
+/* Additional Assignees is a menu like the others, whatever widget it is
+   rendered with - plain multi-select, or select2 if the AjaxSelect
+   directive comes back. */
+#formfield-form-widgets-related_members select,
+#formfield-form-widgets-related_members .pat-select2,
+#formfield-form-widgets-related_members .select2-container {
+    width: var(--docent-menu-w);
+    max-width: 100%;
+}
+
+/* One gap between every pair of fields. Controls carry different default
+   bottom margins - a multi-select is not a menu is not a textarea - so
+   the spacing came from the field, not from whatever is inside it. */
+div.mb-3 > select,
+div.mb-3 > input,
+div.mb-3 > textarea,
+div.mb-3 > div,
+div.mb-3 > .pat-select2,
+div.mb-3 > .select2-container {
+    margin-bottom: 0;
+}
+
 /* The rich-text editor opens at about six lines. Left to itself it opens
    at thirty, which pushes the required menus below the fold. */
 .tox-tinymce {
