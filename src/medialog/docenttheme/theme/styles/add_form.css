@@ -1,3 +1,52 @@
+/* =====================================================================
+   Docent add / edit forms.
+
+   THIS FILE OWNS FORM LAYOUT. Diazo links it last in <head> on add and
+   edit pages (rules.xml: viewpermission-add-portal-content, and
+   .template-edit), so it wins the cascade without needing !important.
+   That is why it is the right place for this, and why styling forms from
+   an add-on's stylesheet does not work: the add-on's sheet loads first
+   and loses, silently, one property at a time.
+
+   So: if a form needs to look different, change it HERE. Do not add form
+   rules to DocentIMS.ActionItems/browser/static/css/action_items.css -
+   they will appear to work until they collide with something in this
+   file, and then the argument is invisible.
+
+   The numbers live in one block at the top. "All the date fields a bit
+   wider" is one line here, on every form on the site.
+   ===================================================================== */
+
+:root {
+	/* Measure. The form card and the masthead above it share this, so
+	   their edges line up. */
+	--docent-form-width: 980px;
+
+	/* Controls. 36px is the height of the header search box and the
+	   account circle, so form controls match the site furniture. */
+	--docent-control-h: 36px;
+	--docent-menu-w: 224px;      /* Priority, Assigned to, State */
+	--docent-date-w: 220px;
+	--docent-radius: 7px;
+
+	/* Type. The form used to run at 120%, which is most of why it read
+	   as oversized. */
+	--docent-label-size: 13px;
+	--docent-field-size: 15px;
+	--docent-field-gap: 20px;
+
+	/* Colour. --docent-accent is the project colour; css-viewlet.pt in
+	   DocentIMS.ActionItems sets it per site from the registry, and this
+	   is the fallback for sites that do not. */
+	--docent-accent: #64041f;
+	--docent-line: #d7dbe3;
+	--docent-label-colour: #05386B;
+	--docent-muted: #77809a;
+	--docent-band: rgb(95, 46, 46);
+}
+
+/* ---------------------------------------------------------------- page */
+
 #portal-column-two {
     padding: 0;
     display: none;
@@ -9,40 +58,11 @@
 #viewlet-below-content #fieldset,
 #viewlet-below-content {background: white; padding: 0; margin: 0}
 
-.imagediv {
-    background-color: #fff;
-    text-align: center;
-}
-
-.imagediv > img {
-    height: 110px;
-    margin: auto;
-}
-h2.sit_tit {
-    text-align: center;
-    font-size: 1.3rem;
-    padding: 0.3rem;
-    margin: 0;
-    z-index: 4;
-    background-color: rgb(95, 46, 46);
-    color: white;
-}
- 
 .template-edit .outer-wrapper,
 .template-action_items .outer-wrapper,
 .viewpermission-add-portal-content .outer-wrapper {
     background-color: #999 !important;
     min-height: 100vh;
-}
-
-.template-action_items h1.documentFirstHeading,
-.template-edit h1.documentFirstHeading,
-.viewpermission-add-portal-content h1.documentFirstHeading {
-    background-color:#f9f2e8;
-    padding: 0.7rem 2rem 0.7rem;
-    color: #555;
-    font-size: 1.15rem;
-    margin-bottom: 0;
 }
 
 .viewpermission-add-portal-content #above-content-wrapper,
@@ -51,24 +71,66 @@ h2.sit_tit {
     display: none !important;
 }
 
+/* ------------------------------------------------------------ masthead
+   The little header the *AddForm / *EditForm classes print above
+   themselves (browser/views.py render(): an .imagediv with the wordmark,
+   then an h2.sit_tit with the project's short name).
+
+   Same width as the form below it, and about a third shorter than it
+   used to be - the wordmark was 110px, the band 1.3rem. */
+
+.imagediv {
+    background-color: #fff;
+    text-align: center;
+    max-width: var(--docent-form-width);
+    margin: 0 auto;
+}
+
+.imagediv > img {
+    height: 77px;
+    margin: auto;
+}
+
+h2.sit_tit {
+    max-width: var(--docent-form-width);
+    margin: 0 auto;
+    text-align: center;
+    font-size: 0.9rem;
+    padding: 0.25rem;
+    z-index: 4;
+    background-color: var(--docent-band);
+    color: white;
+}
+
+.template-action_items h1.documentFirstHeading,
+.template-edit h1.documentFirstHeading,
+.viewpermission-add-portal-content h1.documentFirstHeading {
+    max-width: var(--docent-form-width);
+    margin: 0 auto;
+    background-color: #f9f2e8;
+    padding: 0.5rem 1.4rem;
+    color: #555;
+    font-size: 1.15rem;
+}
+
+/* ------------------------------------------------------------ the card */
+
 .viewpermission-add-portal-content .pat-formunloadalert,
 .template-action_items .pat-formunloadalert,
 .template-edit .pat-formunloadalert {
     background: whitesmoke;
-    max-width: 1440px;
+    max-width: var(--docent-form-width);
     margin: auto;
     padding: 2rem;
     box-shadow: 7px 7px 7px 2px #777;
 }
 
-#content .formControls {
-    background: none;
-}
+/* ------------------------------------------------------------- tabs */
 
 .pat-formunloadalert .form-label,
 .pat-formunloadalert legend,
 legend {
-    color: black !important;
+    color: black;
     margin-right: 1rem;
     line-height: 200%;
 }
@@ -84,63 +146,93 @@ legend {
     font-weight: bold;
     border-bottom-color: whitesmoke;
     background: #EEE;
-
 }
+
+/* ------------------------------------------------------------- fields
+
+   One field per line: label above its control. This used to be a flex
+   row with a 13rem label column, which is a fine layout for a form of
+   six short fields and a poor one for a form with a rich-text editor in
+   it - the editor either sat in a 16rem-narrower column than the page,
+   or wrapped under a label with a 13rem hole beside it. */
 
 div.mb-3 {
     display: flex;
-    font-size: 120%;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: stretch;
+    font-size: var(--docent-field-size);
+    margin-bottom: var(--docent-field-gap);
+}
+
+div.mb-3 > label {
+    min-width: 0;
+    width: auto;
+    font-size: var(--docent-label-size);
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--docent-label-colour);
+    margin: 0 0 6px;
 }
 
 div.mb-3 > div.pat-select2,
 div.mb-3 .form-control {
+    width: 100%;
     max-width: 100%;
-    width: calc( 100% - 16rem);
-    flex-grow: 5;
 }
 
+/* Sized to what they hold. A priority menu whose longest option is one
+   digit does not need the width of the page. */
+input.date-widget,
+div.mb-3 input.date-widget {
+    width: var(--docent-date-w);
+    max-width: 100%;
+}
 
+div.mb-3 .form-select,
+div.mb-3 select.select-widget {
+    width: var(--docent-menu-w);
+    max-width: 100%;
+}
 
-div.mb-3 .invalid-feedback {margin-top: 0}
+div.mb-3 select[multiple] {
+    width: var(--docent-menu-w);
+    min-height: 128px;
+    padding: 6px 8px;
+}
+
+/* The rich-text editor opens at about six lines. Left to itself it opens
+   at thirty, which pushes the required menus below the fold. */
+.tox-tinymce {
+    height: 260px !important;
+    min-height: 260px !important;
+}
+
+div.mb-3 .invalid-feedback {
+    margin-top: 6px;
+    font-style: normal;
+    /* TinyMCE injects its editor after the textarea it replaces, which
+       leaves the message above the box unless the flex order says
+       otherwise. */
+    order: 99;
+}
 
 div.mb-3 table {
     width: auto;
 }
 
-.pat-formunloadalert legend {
-    color: black
-}
-
-div.mb-3>label {
-    min-width: 13rem;
-    font-size: 1.2rem;
-    ;
-}
-
+/* The field descriptions on these types are long enough to double the
+   height of the form. */
 div.mb-3 .form-text {
     display: none;
 }
 
-input.date-widget,
-div.mb-3 .form-select {
-    max-width: 15rem;
-}
-
-.richtext-field, 
+.richtext-field,
 .content-browser-wrapper {
     width: 100% !important;
 }
 
-#formfield-form-widgets-priority,
-#formfield-form-widgets-assigned_to {
-   width: 52%;
-  max-height: 3rem;
-   
-}
-
-
-#formfield-form-widgets-source, 
+/* Plumbing that has no business on a form. */
+#formfield-form-widgets-source,
 #formfield-form-widgets-related_item {
     display: none !important;
 }
@@ -150,18 +242,87 @@ div.mb-3 .form-select {
     width: 40%;
 }
 
-#formfield-form-widgets-related_members {
-    width: 37%;
-    float: right;
-    margin-top: -3rem;
+/* Additional Assignees sits under Assigned to, in the flow.
 
+   It used to be `width:37%; float:right; margin-top:-3rem`, which put it
+   beside Assigned to - and on top of it once the labels moved above the
+   controls. It also cost three separate attempts to "fix" a floating box
+   in the add-on's stylesheet, which never had anything to do with it. */
+#formfield-form-widgets-related_members {
+    width: 100%;
+    float: none;
+    margin-top: 0;
+    clear: both;
+    display: block;
 }
 
 div.mb-3.widgets.related_members,
-#formfield-form-widgets-related_members,
 #fieldname-form.widgets.related_members,
 #formfield-form-widgets-feedback_text,
 #formfield-form-widgets-notes,
 #formfield-form-widgets-private_notes {
-    display: block
+    display: block;
+}
+
+/* ------------------------------------------------------- the buttons */
+
+#content .formControls {
+    background: none;
+    /* Barceloneta pins these to the bottom of the window, which leaves
+       them floating over whichever fields happen to be underneath. */
+    position: static;
+    border-top: 1px solid #e3e3e3;
+    margin-top: 26px;
+    padding-top: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#content .formControls .btn,
+#content .formControls input[type="submit"] {
+    border-radius: 18px;
+    padding: 8px 22px;
+    font-weight: 600;
+}
+
+/* ------------------------------------- behaviour shared with the add-on
+
+   These two go with JavaScript in DocentIMS.ActionItems
+   (browser/static/js/action_items.js). They live here rather than there
+   for the reason at the top of this file: rules that fight this
+   stylesheet lose, so anything that has to be certain belongs in it. */
+
+/* Errors appear when Create is pressed, not when the page opens. The
+   messages are in the markup from the first paint; without this a form
+   nobody has touched opens already in red. The class is added on the
+   form when its submit button is clicked. */
+form.rowlike:not(.ai-submitted) .invalid-feedback,
+form.rowlike:not(.ai-submitted) em.invalid-feedback {
+    display: none;
+}
+
+form.rowlike:not(.ai-submitted) .is-invalid,
+form.rowlike:not(.ai-submitted) .form-control:invalid,
+form.rowlike:not(.ai-submitted) .form-select:invalid {
+    border-color: var(--docent-line);
+    background-image: none;
+}
+
+/* Create is out of reach until every required field is satisfied, with a
+   line beside it naming what is missing and which tab it is on. */
+#content .formControls [type="submit"]:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+#content .formControls .ai-missing {
+    margin-left: 14px;
+    font-size: 13px;
+    color: var(--docent-muted);
+}
+
+#content .formControls .ai-missing b {
+    font-weight: 600;
+    color: #44506a;
 }
