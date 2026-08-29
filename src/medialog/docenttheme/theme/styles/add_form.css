@@ -161,7 +161,43 @@ div.mb-3 {
     flex-direction: column;
     align-items: stretch;
     font-size: var(--docent-field-size);
+    /* The gap is the field's bottom margin and nothing else. Measured
+       before this: 40px under Title and under Additional Assignees, 20
+       everywhere else - because a few widgets bring a top margin of
+       their own, and the fields sit in a flex column, where adjacent
+       margins add up instead of collapsing. */
+    margin-top: 0;
     margin-bottom: var(--docent-field-gap);
+}
+
+/* Same reason, one level in: whatever a widget renders as, its outermost
+   pieces do not add to the gap around the field that holds them. */
+div.mb-3 > *:first-child {
+    margin-top: 0;
+}
+
+div.mb-3 > *:last-child {
+    margin-bottom: 0;
+}
+
+/* The gap belongs to the container, not to the fields.
+
+   Margins were the wrong mechanism: every widget brings its own, they
+   add up in a flex column, and correcting them one widget at a time is
+   endless - three passes at it produced 40 / 20 / 20 / 19 / 40. A `gap`
+   on the row that holds the fields is a single number that nothing
+   inside a field can contribute to.
+
+   Scoped to fields that actually sit in a .row, so any field rendered
+   outside one keeps its own margin and does not lose its spacing. */
+form.rowlike fieldset .row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--docent-field-gap);
+}
+
+form.rowlike fieldset .row > div.mb-3 {
+    margin: 0 !important;
 }
 
 div.mb-3 > label {
@@ -184,12 +220,14 @@ div.mb-3 .form-control {
    digit does not need the width of the page. */
 input.date-widget,
 div.mb-3 input.date-widget {
+    min-width: 0;
     width: var(--docent-date-w);
     max-width: 100%;
 }
 
 div.mb-3 .form-select,
 div.mb-3 select.select-widget {
+    min-width: 0;
     width: var(--docent-menu-w);
     max-width: 100%;
 }
@@ -198,6 +236,46 @@ div.mb-3 select[multiple] {
     width: var(--docent-menu-w);
     min-height: 128px;
     padding: 6px 8px;
+}
+
+/* Additional Assignees is a menu like the others.
+
+   !important because select2 writes the width onto its container as an
+   inline style, and an inline style beats a stylesheet. This is the one
+   rule in this file that has to shout. */
+#formfield-form-widgets-related_members select,
+#formfield-form-widgets-related_members .pat-select2,
+#formfield-form-widgets-related_members .select2-container,
+#formfield-form-widgets-related_members .select2-container-multi {
+    /* min-width first: it is the reason every attempt at `width` failed.
+       An explicit width - even inline, even !important - loses to a
+       min-width, so the container held ~426px however loudly it was told
+       224. Proved in the browser: setting width:224px !important on the
+       element itself still computed to 426. */
+    min-width: 0 !important;
+    width: var(--docent-menu-w) !important;
+    max-width: 100% !important;
+}
+
+/* select2 builds a list inside the field, and that list brings its own
+   bottom margin - which is why the gap under this one field was 40px
+   where every other gap was 20. */
+#formfield-form-widgets-related_members .select2-container,
+#formfield-form-widgets-related_members .select2-choices,
+#formfield-form-widgets-related_members ul {
+    margin-bottom: 0 !important;
+}
+
+/* One gap between every pair of fields. Controls carry different default
+   bottom margins - a multi-select is not a menu is not a textarea - so
+   the spacing came from the field, not from whatever is inside it. */
+div.mb-3 > select,
+div.mb-3 > input,
+div.mb-3 > textarea,
+div.mb-3 > div,
+div.mb-3 > .pat-select2,
+div.mb-3 > .select2-container {
+    margin-bottom: 0;
 }
 
 /* The rich-text editor opens at about six lines. Left to itself it opens
