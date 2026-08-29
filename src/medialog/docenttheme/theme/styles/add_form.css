@@ -184,12 +184,14 @@ div.mb-3 .form-control {
    digit does not need the width of the page. */
 input.date-widget,
 div.mb-3 input.date-widget {
+    min-width: 0;
     width: var(--docent-date-w);
     max-width: 100%;
 }
 
 div.mb-3 .form-select,
 div.mb-3 select.select-widget {
+    min-width: 0;
     width: var(--docent-menu-w);
     max-width: 100%;
 }
@@ -209,6 +211,12 @@ div.mb-3 select[multiple] {
 #formfield-form-widgets-related_members .pat-select2,
 #formfield-form-widgets-related_members .select2-container,
 #formfield-form-widgets-related_members .select2-container-multi {
+    /* min-width first: it is the reason every attempt at `width` failed.
+       An explicit width - even inline, even !important - loses to a
+       min-width, so the container held ~426px however loudly it was told
+       224. Proved in the browser: setting width:224px !important on the
+       element itself still computed to 426. */
+    min-width: 0 !important;
     width: var(--docent-menu-w) !important;
     max-width: 100% !important;
 }
