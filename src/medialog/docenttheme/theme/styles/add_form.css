@@ -27,6 +27,7 @@
 	--docent-control-h: 36px;
 	--docent-menu-w: 224px;      /* Priority, Assigned to, State */
 	--docent-date-w: 220px;
+	--docent-datetime-w: 265px;   /* a date AND a time needs more room */
 	--docent-radius: 7px;
 
 	/* Type. The form used to run at 120%, which is most of why it read
@@ -218,10 +219,23 @@ div.mb-3 .form-control {
 
 /* Sized to what they hold. A priority menu whose longest option is one
    digit does not need the width of the page. */
+/* Dates and times. Matched by input type as well as by widget class:
+   the Meeting form's Event Starts / Event Ends are datetime widgets, so
+   a rule written for .date-widget alone missed them and they took the
+   full width of the form. */
 input.date-widget,
-div.mb-3 input.date-widget {
+div.mb-3 input.date-widget,
+div.mb-3 input[type="date"],
+div.mb-3 input[type="time"] {
     min-width: 0;
     width: var(--docent-date-w);
+    max-width: 100%;
+}
+
+div.mb-3 input.datetime-widget,
+div.mb-3 input[type="datetime-local"] {
+    min-width: 0;
+    width: var(--docent-datetime-w);
     max-width: 100%;
 }
 
