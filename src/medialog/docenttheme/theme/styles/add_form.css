@@ -161,7 +161,23 @@ div.mb-3 {
     flex-direction: column;
     align-items: stretch;
     font-size: var(--docent-field-size);
+    /* The gap is the field's bottom margin and nothing else. Measured
+       before this: 40px under Title and under Additional Assignees, 20
+       everywhere else - because a few widgets bring a top margin of
+       their own, and the fields sit in a flex column, where adjacent
+       margins add up instead of collapsing. */
+    margin-top: 0;
     margin-bottom: var(--docent-field-gap);
+}
+
+/* Same reason, one level in: whatever a widget renders as, its outermost
+   pieces do not add to the gap around the field that holds them. */
+div.mb-3 > *:first-child {
+    margin-top: 0;
+}
+
+div.mb-3 > *:last-child {
+    margin-bottom: 0;
 }
 
 div.mb-3 > label {
