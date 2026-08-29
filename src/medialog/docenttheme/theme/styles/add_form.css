@@ -252,15 +252,19 @@ div.mb-3 select[multiple] {
     padding: 6px 8px;
 }
 
-/* Additional Assignees is a menu like the others.
+/* Every pulldown is one width, whatever widget draws it. Written for
+   Additional Assignees first, then widened to all of them: the Meeting
+   form's Location, Contact Person and Specific Members are select2s too,
+   and each one left at its natural width was another field that did not
+   line up with the menus above it.
 
    !important because select2 writes the width onto its container as an
    inline style, and an inline style beats a stylesheet. This is the one
    rule in this file that has to shout. */
-#formfield-form-widgets-related_members select,
-#formfield-form-widgets-related_members .pat-select2,
-#formfield-form-widgets-related_members .select2-container,
-#formfield-form-widgets-related_members .select2-container-multi {
+div.mb-3 select,
+div.mb-3 .pat-select2,
+div.mb-3 .select2-container,
+div.mb-3 .select2-container-multi {
     /* min-width first: it is the reason every attempt at `width` failed.
        An explicit width - even inline, even !important - loses to a
        min-width, so the container held ~426px however loudly it was told
@@ -272,11 +276,11 @@ div.mb-3 select[multiple] {
 }
 
 /* select2 builds a list inside the field, and that list brings its own
-   bottom margin - which is why the gap under this one field was 40px
+   bottom margin - which is why the gap under such a field was 40px
    where every other gap was 20. */
-#formfield-form-widgets-related_members .select2-container,
-#formfield-form-widgets-related_members .select2-choices,
-#formfield-form-widgets-related_members ul {
+div.mb-3 .select2-container,
+div.mb-3 .select2-choices,
+div.mb-3 .select2-container ul {
     margin-bottom: 0 !important;
 }
 
