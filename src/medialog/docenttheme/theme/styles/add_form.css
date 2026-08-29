@@ -200,14 +200,26 @@ div.mb-3 select[multiple] {
     padding: 6px 8px;
 }
 
-/* Additional Assignees is a menu like the others, whatever widget it is
-   rendered with - plain multi-select, or select2 if the AjaxSelect
-   directive comes back. */
+/* Additional Assignees is a menu like the others.
+
+   !important because select2 writes the width onto its container as an
+   inline style, and an inline style beats a stylesheet. This is the one
+   rule in this file that has to shout. */
 #formfield-form-widgets-related_members select,
 #formfield-form-widgets-related_members .pat-select2,
-#formfield-form-widgets-related_members .select2-container {
-    width: var(--docent-menu-w);
-    max-width: 100%;
+#formfield-form-widgets-related_members .select2-container,
+#formfield-form-widgets-related_members .select2-container-multi {
+    width: var(--docent-menu-w) !important;
+    max-width: 100% !important;
+}
+
+/* select2 builds a list inside the field, and that list brings its own
+   bottom margin - which is why the gap under this one field was 40px
+   where every other gap was 20. */
+#formfield-form-widgets-related_members .select2-container,
+#formfield-form-widgets-related_members .select2-choices,
+#formfield-form-widgets-related_members ul {
+    margin-bottom: 0 !important;
 }
 
 /* One gap between every pair of fields. Controls carry different default
