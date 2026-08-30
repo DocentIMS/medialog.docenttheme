@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from medialog.docenttheme.tinymce_setup import add_extras_plugin
+from medialog.docenttheme.tinymce_setup import fix_mentions_plugin
 from medialog.docenttheme.tinymce_setup import configure_tinymce
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
@@ -39,3 +40,14 @@ def upgrade_extras_1003(setup_context):
     """Register the Print/Save extras plugin (preserves toolbar/menu/plugins)."""
     registry = getUtility(IRegistry)
     add_extras_plugin(registry)
+
+
+def upgrade_mentions_1004(setup_context):
+    """Point the @-mention dropdown at a plugin that exists.
+
+    Every editor was asking for it from medialog.notifications, which left
+    the build, so TinyMCE logged a failed plugin load on every form and
+    typing @ offered nobody.
+    """
+    registry = getUtility(IRegistry)
+    fix_mentions_plugin(registry)
