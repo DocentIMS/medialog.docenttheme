@@ -83,6 +83,16 @@
       handler=".upgrades.upgrade_extras_1003"
       />
 
+  <!-- The @-mention dropdown, re-homed after medialog.notifications left -->
+  <genericsetup:upgradeStep
+      source="1003"
+      destination="1004"
+      title="Repair the @-mention dropdown in the editor"
+      description="Points it at DocentIMS.ActionItems; it was asking for a plugin from a package that is no longer installed, so typing @ offered nobody."
+      profile="medialog.docenttheme:default"
+      handler=".upgrades.upgrade_mentions_1004"
+      />
+
   <include package=".viewlets" />
 
   <plone:static

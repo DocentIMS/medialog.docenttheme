@@ -42,12 +42,19 @@ PLUGINS = [
 # package's static directory and loaded via external_plugins.
 EXTRAS_URL = "/++plone++medialog.docenttheme/tiny-extras.js"
 
+# The @-mention dropdown, served from DocentIMS.ActionItems - which is
+# where the endpoint that feeds it and the parser that reads its output
+# both live. It used to be pointed at medialog.notifications, which left
+# the build in docent-server-build #232: every editor then asked for a
+# plugin that was no longer installed, logged "Failed to load plugin:
+# mentions_autocomplete", and typing @ offered nobody.
+MENTIONS_URL = "/++plone++DocentIMS.ActionItems/tiny_mce/plugins/mentions.js"
+
 # No "plugins" key here on purpose - that would override the checkbox
 # selection above. External plugins load via "external_plugins".
 OTHER_SETTINGS = {
     "external_plugins": {
-        "mentions_autocomplete":
-            "/++plone++medialog.notifications/tiny_mce/plugins/index.js",
+        "DocentIMS_Mentions": MENTIONS_URL,
         "docentextras": EXTRAS_URL,
     }
 }
@@ -77,6 +84,40 @@ def add_extras_plugin(registry):
     data["external_plugins"] = ext
     registry["plone.other_settings"] = json.dumps(data)
     logger.info("Registered docentextras (Print/Save) external plugin.")
+
+
+def fix_mentions_plugin(registry):
+    """Point the @-mention dropdown at the plugin that still exists.
+
+    Existing sites carry the external_plugins map in their own registry,
+    so changing OTHER_SETTINGS above only helps a fresh install. This
+    rewrites what is already there: it drops the dead
+    "mentions_autocomplete" entry, which pointed into
+    medialog.notifications after that package left the build, and adds
+    "DocentIMS_Mentions" pointing at DocentIMS.ActionItems - where the
+    endpoint feeding the dropdown and the parser reading its output both
+    live.
+
+    Everything else in other_settings is left as the admin has it, the
+    same way add_extras_plugin works.
+    """
+    rec = registry.records.get("plone.other_settings")
+    if rec is None:
+        return
+    try:
+        data = json.loads(rec.value or "{}")
+    except (ValueError, TypeError):
+        data = {}
+    if not isinstance(data, dict):
+        data = {}
+    ext = data.get("external_plugins") or {}
+    removed = ext.pop("mentions_autocomplete", None)
+    ext["DocentIMS_Mentions"] = MENTIONS_URL
+    data["external_plugins"] = ext
+    registry["plone.other_settings"] = json.dumps(data)
+    logger.info(
+        "@-mentions plugin now %s%s", MENTIONS_URL,
+        " (replaced %s)" % removed if removed else "")
 
 
 def repair_registry_fields(registry):
