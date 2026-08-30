@@ -122,7 +122,10 @@ h2.sit_tit {
     background: whitesmoke;
     max-width: var(--docent-form-width);
     margin: auto;
-    padding: 2rem;
+    /* Less at the top than the sides: measured 52px between the bottom of
+       the project band and the top of the Title label, which is a lot of
+       nothing before the form starts. Halved. */
+    padding: 0.4rem 2rem 2rem;
     box-shadow: 7px 7px 7px 2px #777;
 }
 
@@ -421,4 +424,112 @@ form.rowlike:not(.ai-submitted) .form-select:invalid {
 #content .formControls .ai-missing b {
     font-weight: 600;
     color: #44506a;
+}
+
+/* --------------------------------------------------- Add Task: chips
+
+   The Add Task form asks for the five fields a task cannot exist without
+   and offers the rest as chips (action_items.js builds them). This is the
+   appearance only - the script writes its own display rules, so an older
+   copy of this file leaves the chips unstyled rather than leaving fields
+   hidden with no way to reach them. */
+
+.ai-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+.ai-chip {
+    font-size: var(--docent-label-size);
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--docent-accent);
+    background: #fff;
+    border: 1px solid #e0d2d7;
+    border-radius: 18px;
+    padding: 9px 16px;
+    cursor: pointer;
+}
+
+.ai-chip:hover {
+    background: #f7eef1;
+}
+
+.ai-chip:focus-visible {
+    outline: 2px solid var(--docent-accent);
+    outline-offset: 2px;
+}
+
+/* Open reads as filled, the way the ribbon's current section does. */
+.ai-chip[aria-pressed="true"] {
+    background: var(--docent-accent);
+    border-color: var(--docent-accent);
+    color: #fff;
+}
+
+/* The way out of the chips is not one of the chips. */
+.ai-chip-all {
+    margin-left: auto;
+    color: var(--docent-muted);
+    border-color: var(--docent-line);
+    font-weight: 500;
+}
+
+.ai-chips-help {
+    color: var(--docent-muted);
+    font-size: var(--docent-label-size);
+    margin: 13px 0 0;
+}
+
+/* A field opened by a chip is revealed where it already sits - the sheets
+   follow the chip row in the document - so it needs the gap the fields
+   above it get. Specific enough to beat the `margin: 0 !important` that
+   hands spacing to the container for fields inside a .row. */
+form.rowlike.ai-chips-on fieldset .row > div.mb-3.ai-c-show,
+form.rowlike.ai-chips-on fieldset > div.mb-3.ai-c-show {
+    margin-top: var(--docent-field-gap) !important;
+}
+
+/* A sheet's own description, carried onto the chip that opens it. */
+.ai-chips-note {
+    color: var(--docent-muted);
+    font-size: var(--docent-label-size);
+    margin: var(--docent-field-gap) 0 calc(var(--docent-field-gap) * -1);
+}
+
+
+/* Priority, Assigned to and Initial Due Date on one line.
+
+   They are one decision - how urgent, whose, by when - and three stacked
+   rows for three short controls is most of why the form ran long.
+   action_items.js groups them; this lays them out in equal columns.
+
+   The margin reset repeats the one the container-gap rule applies to
+   fields directly inside a .row: these three are now inside .ai-trio
+   instead, so that selector no longer reaches them. */
+.ai-trio {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--docent-field-gap);
+    align-items: start;
+}
+
+.ai-trio > div.mb-3,
+form.rowlike.ai-chips-on .ai-trio > div.mb-3 {
+    margin: 0 !important;
+}
+
+/* The line under them describing what is required, and the rule that
+   divides required from optional.
+
+   The rule used to sit on top of the chip row, which put it wherever the
+   chip row happened to be - so opening a chip pushed it down the page.
+   It belongs to the boundary, not to the chips: it stays directly under
+   the three required menus, and whatever a chip opens appears below it. */
+form.rowlike.ai-chips-on .ai-chips-help {
+    margin: 4px 0 0;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--docent-line);
 }
