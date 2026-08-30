@@ -482,21 +482,18 @@ form.rowlike:not(.ai-submitted) .form-select:invalid {
     margin: 13px 0 0;
 }
 
-/* Fields opened by a chip land here, under the row that opened them. */
-.ai-chips-opened {
-    display: flex;
-    flex-direction: column;
-    gap: var(--docent-field-gap);
-    margin-top: var(--docent-field-gap);
-}
-
-.ai-chips-opened:empty {
-    margin-top: 0;
+/* A field opened by a chip is revealed where it already sits - the sheets
+   follow the chip row in the document - so it needs the gap the fields
+   above it get. Specific enough to beat the `margin: 0 !important` that
+   hands spacing to the container for fields inside a .row. */
+form.rowlike.ai-chips-on fieldset .row > div.mb-3.ai-c-show,
+form.rowlike.ai-chips-on fieldset > div.mb-3.ai-c-show {
+    margin-top: var(--docent-field-gap) !important;
 }
 
 /* A sheet's own description, carried onto the chip that opens it. */
 .ai-chips-note {
     color: var(--docent-muted);
     font-size: var(--docent-label-size);
-    margin: 0;
+    margin: var(--docent-field-gap) 0 calc(var(--docent-field-gap) * -1);
 }
