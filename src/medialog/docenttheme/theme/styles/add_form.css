@@ -438,9 +438,7 @@ form.rowlike:not(.ai-submitted) .form-select:invalid {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-top: 6px;
-    padding-top: 22px;
-    border-top: 1px solid var(--docent-line);
+    margin-top: 22px;
 }
 
 .ai-chip {
@@ -523,7 +521,15 @@ form.rowlike.ai-chips-on .ai-trio > div.mb-3 {
     margin: 0 !important;
 }
 
-/* The line under them describing what is required. */
+/* The line under them describing what is required, and the rule that
+   divides required from optional.
+
+   The rule used to sit on top of the chip row, which put it wherever the
+   chip row happened to be - so opening a chip pushed it down the page.
+   It belongs to the boundary, not to the chips: it stays directly under
+   the three required menus, and whatever a chip opens appears below it. */
 form.rowlike.ai-chips-on .ai-chips-help {
     margin: 4px 0 0;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--docent-line);
 }
