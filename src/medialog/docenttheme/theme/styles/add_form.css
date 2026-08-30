@@ -122,7 +122,10 @@ h2.sit_tit {
     background: whitesmoke;
     max-width: var(--docent-form-width);
     margin: auto;
-    padding: 2rem;
+    /* Less at the top than the sides: measured 52px between the bottom of
+       the project band and the top of the Title label, which is a lot of
+       nothing before the form starts. Halved. */
+    padding: 0.4rem 2rem 2rem;
     box-shadow: 7px 7px 7px 2px #777;
 }
 
@@ -496,4 +499,31 @@ form.rowlike.ai-chips-on fieldset > div.mb-3.ai-c-show {
     color: var(--docent-muted);
     font-size: var(--docent-label-size);
     margin: var(--docent-field-gap) 0 calc(var(--docent-field-gap) * -1);
+}
+
+
+/* Priority, Assigned to and Initial Due Date on one line.
+
+   They are one decision - how urgent, whose, by when - and three stacked
+   rows for three short controls is most of why the form ran long.
+   action_items.js groups them; this lays them out in equal columns.
+
+   The margin reset repeats the one the container-gap rule applies to
+   fields directly inside a .row: these three are now inside .ai-trio
+   instead, so that selector no longer reaches them. */
+.ai-trio {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--docent-field-gap);
+    align-items: start;
+}
+
+.ai-trio > div.mb-3,
+form.rowlike.ai-chips-on .ai-trio > div.mb-3 {
+    margin: 0 !important;
+}
+
+/* The line under them describing what is required. */
+form.rowlike.ai-chips-on .ai-chips-help {
+    margin: 4px 0 0;
 }
