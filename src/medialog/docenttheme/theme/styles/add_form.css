@@ -123,7 +123,7 @@ h2.sit_tit {
        is worth reading once and then ignoring - so it takes the colour of
        the mark beside it rather than being another grey, and sits light
        enough not to compete with the fields under it. */
-    color: #865100;
+    color: #8B6914;
     font-size: 1.05rem;
     font-weight: 400;
     letter-spacing: 0.01em;
@@ -144,7 +144,7 @@ h2.sit_tit {
     flex: 0 0 30px;
     width: 30px;
     height: 30px;
-    background: url(../images/docent-round.png) center / contain no-repeat;
+    background: url(../images/docent-round.svg) center / contain no-repeat;
 }
 
 /* ------------------------------------------------------------ the card */
