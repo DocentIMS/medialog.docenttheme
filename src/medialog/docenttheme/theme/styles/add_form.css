@@ -552,12 +552,20 @@ form.rowlike.ai-chips-on .ai-meet-row > div.mb-3 {
 
 /* The date controls have a fixed width elsewhere on the form; in this row
    the column decides, so they fill it. */
+/* The `div.mb-3 .select2-container` rule further up pins every picker to
+   --docent-menu-w with !important, and it is more specific than a plain
+   `.ai-meet-row .select2-container` (0-2-1 against 0-2-0), so it wins even
+   though both shout. Naming div.mb-3 here too outranks it. In a row the
+   column decides the width, not the control. */
 .ai-meet-row input,
-.ai-meet-row .select2-container,
+.ai-meet-row div.mb-3 select,
+.ai-meet-row div.mb-3 .pat-select2,
+.ai-meet-row div.mb-3 .select2-container,
+.ai-meet-row div.mb-3 .select2-container-multi,
 .ai-meet-row .form-control {
     width: 100% !important;
-    min-width: 0;
-    max-width: none;
+    min-width: 0 !important;
+    max-width: none !important;
 }
 
 /* Meeting Location is a select2 token box, and its search field was
@@ -603,6 +611,52 @@ form.rowlike.ai-chips-on [id^="formfield-"].ai-c-dropped {
 }
 form.rowlike.ai-chips-on.ai-chips-all [id^="formfield-"].ai-c-dropped {
     display: flex !important;
+}
+
+/* --------------------------------------------------- who is coming
+
+   Specific Groups, Specific Members and Outside Invitees are one question
+   asked three ways, and they were drawn at three different sizes: two
+   224px pickers stacked above an 872px textarea that ran the width of the
+   card. Equal columns, and the textarea sized like its neighbours.
+
+   The three sit inside the Invitees chip. An off-screen field is out of
+   flow, so with the chip shut this grid has no children in flow and
+   collapses to nothing instead of leaving a gap. */
+.ai-meet-invitees {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
+}
+
+.ai-meet-invitees > div.mb-3,
+form.rowlike.ai-chips-on .ai-meet-invitees > div.mb-3 {
+    margin: 0 !important;
+}
+
+/* Same specificity fight as the row above: div.mb-3 has to be named or
+   the 224px pulldown rule wins. */
+.ai-meet-invitees input,
+.ai-meet-invitees textarea,
+.ai-meet-invitees div.mb-3 select,
+.ai-meet-invitees div.mb-3 .pat-select2,
+.ai-meet-invitees div.mb-3 .select2-container,
+.ai-meet-invitees div.mb-3 .select2-container-multi {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+}
+
+/* Outside Invitees is a textarea because the names are typed rather than
+   picked, but it is the same question as the two beside it and should not
+   look like a different kind of field. One line to start with, and it
+   still drags taller when somebody has a long list. */
+.ai-meet-invitees textarea {
+    height: var(--docent-control-h);
+    min-height: var(--docent-control-h);
+    resize: vertical;
+    padding-top: 6px;
 }
 
 /* ------------------------------------------------ join the meeting
