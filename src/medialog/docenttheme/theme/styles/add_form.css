@@ -119,14 +119,17 @@ h2.sit_tit {
     margin: 0 auto;
     background-color: #f9f2e8;
     padding: 0.5rem 1.4rem;
-    color: #555;
-    font-size: 1.15rem;
-    /* Plone's h1 is 700. On a band this small that reads as shouting, and
-       the heading is not the thing anyone came to the page to read. */
-    font-weight: 500;
+    /* The logo's own brown. The heading names the thing being made, which
+       is worth reading once and then ignoring - so it takes the colour of
+       the mark beside it rather than being another grey, and sits light
+       enough not to compete with the fields under it. */
+    color: #8B6914;
+    font-size: 1.05rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
 }
 
 /* The round mark, on the heading's own row rather than on a band of its
@@ -138,10 +141,10 @@ h2.sit_tit {
 .template-edit h1.documentFirstHeading::before,
 .viewpermission-add-portal-content h1.documentFirstHeading::before {
     content: "";
-    flex: 0 0 34px;
-    width: 34px;
-    height: 34px;
-    background: url(../images/docent-round.png) center / contain no-repeat;
+    flex: 0 0 30px;
+    width: 30px;
+    height: 30px;
+    background: url(../images/docent-round.svg) center / contain no-repeat;
 }
 
 /* ------------------------------------------------------------ the card */
