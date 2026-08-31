@@ -545,7 +545,7 @@ form.rowlike.ai-chips-on .ai-trio > div.mb-3 {
        265px from --docent-datetime-w. With plain 1fr the three columns
        refuse to shrink, the row grows past the card, and the join
        control is clipped off the right edge. */
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
     gap: 14px;
     align-items: end;
 }
@@ -788,11 +788,37 @@ form.rowlike.ai-chips-on label .required {
     display: none;
 }
 
+/* The :invalid variants are not decoration. An empty required box IS
+   :invalid, and the rule further up that keeps the browser's own red off
+   an untouched form -
+
+       form.rowlike:not(.ai-submitted) .form-control:invalid
+
+   - weighs exactly the same as this one (0-4-1 either way). A tie is
+   settled by which comes last in the file, which is no way to decide
+   whether a required field looks marked or not. Naming :invalid here
+   makes it 0-5-1 and settles it on purpose. */
 form.rowlike.ai-chips-on .ai-still-needed .form-control,
-form.rowlike.ai-chips-on .ai-still-needed .select2-choices,
-form.rowlike.ai-chips-on .ai-still-needed .select2-choice {
+form.rowlike.ai-chips-on .ai-still-needed .form-control:invalid,
+form.rowlike.ai-chips-on .ai-still-needed .form-select:invalid {
     border-color: #c0405a;
     background: #fdf7f8;
+}
+
+/* Meeting Location is a Select2 token box, and DocentIMS.ActionItems'
+   css viewlet pins every one of those with
+
+       fieldset .select2-container-multi .select2-choices
+           { border: 1px solid #CCC !important }
+
+   so it stayed grey while the three boxes beside it were marked. That
+   rule is older and blanket; overriding it here rather than unpicking it
+   keeps every other picker on every other form exactly as it is. This
+   selector is the more specific of the two, so !important settles it. */
+form.rowlike.ai-chips-on .ai-still-needed .select2-choices,
+form.rowlike.ai-chips-on .ai-still-needed .select2-choice {
+    border-color: #c0405a !important;
+    background: #fdf7f8 !important;
 }
 
 /* Focus still belongs to the project colour, tinted or not. */
