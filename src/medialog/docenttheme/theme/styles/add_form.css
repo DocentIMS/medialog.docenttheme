@@ -767,3 +767,35 @@ form.rowlike.ai-chips-on .ai-chips-help {
     padding-bottom: 18px;
     border-bottom: 1px solid var(--docent-line);
 }
+
+/* ----------------------------------------- what a form still needs
+
+   A required field used to say so with a red dot after its name. The dot
+   is small, easy to miss, and sits on the label rather than on the box
+   you have to fill in. So the box carries it instead.
+
+   "Still needed", not "required": DocentIMS.ActionItems puts
+   .ai-still-needed on a required field while it is empty and takes it off
+   the moment it is filled, so the tint clears as the form is worked
+   through. Required and finished is not a state worth colouring red, and
+   on a meeting the two dates arrive already filled - a tint that never
+   cleared would sit on fields nobody has to touch.
+
+   Chip form only. The tabbed form keeps its dots: the tint says "look
+   here" and cannot say it about a field on a sheet that is not open. */
+
+form.rowlike.ai-chips-on label .required {
+    display: none;
+}
+
+form.rowlike.ai-chips-on .ai-still-needed .form-control,
+form.rowlike.ai-chips-on .ai-still-needed .select2-choices,
+form.rowlike.ai-chips-on .ai-still-needed .select2-choice {
+    border-color: #e8a9b4;
+    background: #fdf7f8;
+}
+
+/* Focus still belongs to the project colour, tinted or not. */
+form.rowlike.ai-chips-on .ai-still-needed .form-control:focus {
+    border-color: var(--docent-accent, #64041f);
+}
