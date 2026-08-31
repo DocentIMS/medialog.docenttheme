@@ -92,6 +92,15 @@
     margin: auto;
 }
 
+/* Not on an add or edit form. The round mark now sits on the heading row
+   beside "Add Meeting" (below), and two logos on one short form is one
+   logo too many. The band stays everywhere else it is used. */
+.viewpermission-add-portal-content .imagediv,
+.template-edit .imagediv,
+.template-action_items .imagediv {
+    display: none;
+}
+
 h2.sit_tit {
     max-width: var(--docent-form-width);
     margin: 0 auto;
@@ -112,6 +121,27 @@ h2.sit_tit {
     padding: 0.5rem 1.4rem;
     color: #555;
     font-size: 1.15rem;
+    /* Plone's h1 is 700. On a band this small that reads as shouting, and
+       the heading is not the thing anyone came to the page to read. */
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* The round mark, on the heading's own row rather than on a band of its
+   own above it. A background on ::before rather than an <img>: the
+   heading is Plone's, rendered by the main template well before any of
+   this add-on's markup, so there is nothing here to put an image inside
+   of. */
+.template-action_items h1.documentFirstHeading::before,
+.template-edit h1.documentFirstHeading::before,
+.viewpermission-add-portal-content h1.documentFirstHeading::before {
+    content: "";
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
+    background: url(../images/docent-round.png) center / contain no-repeat;
 }
 
 /* ------------------------------------------------------------ the card */
