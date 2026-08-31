@@ -521,6 +521,181 @@ form.rowlike.ai-chips-on .ai-trio > div.mb-3 {
     margin: 0 !important;
 }
 
+/* ------------------------------------------------------- meeting row
+
+   Meeting start, Meeting end and Meeting Location, plus the control that
+   opens the online meeting. Three short values that each had a row of
+   their own, and a link that was buried inside the Invitees chip - behind
+   Entire Team, Specific Groups, Specific Members and Outside Invitees -
+   which is why nobody found it at meeting time.
+
+   Four columns, not three: the first three share the space equally and
+   the join control takes only the width its own text needs. align-items
+   is end rather than start so the three inputs and the pill sit on one
+   baseline despite the labels stacked above them. */
+.ai-meet-row {
+    display: grid;
+    /* minmax(0, 1fr), not 1fr: a grid column's default minimum is the
+       content's own width, and the datetime controls carry a fixed
+       265px from --docent-datetime-w. With plain 1fr the three columns
+       refuse to shrink, the row grows past the card, and the join
+       control is clipped off the right edge. */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) auto;
+    gap: 14px;
+    align-items: end;
+}
+
+.ai-meet-row > div.mb-3,
+form.rowlike.ai-chips-on .ai-meet-row > div.mb-3 {
+    margin: 0 !important;
+}
+
+/* The date controls have a fixed width elsewhere on the form; in this row
+   the column decides, so they fill it. */
+.ai-meet-row input,
+.ai-meet-row .select2-container,
+.ai-meet-row .form-control {
+    width: 100% !important;
+    min-width: 0;
+    max-width: none;
+}
+
+/* Meeting Location is a select2 token box, and its search field was
+   wrapping onto a second line - one chosen location and the box stood at
+   64px against the 36px of the two date controls beside it, which put its
+   label a quarter-inch higher than theirs. Lay the token and the search
+   field out on one line and the three match.
+
+   min-height rather than height: pick a second location and the box still
+   grows, rather than hiding the choice behind a scrollbar. */
+.ai-meet-row ul.select2-choices {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    min-height: var(--docent-control-h);
+    padding: 2px 6px;
+}
+
+.ai-meet-row ul.select2-choices li {
+    margin: 0;
+}
+
+.ai-meet-row ul.select2-choices li.select2-search-field {
+    flex: 1 1 40px;
+    min-width: 40px;
+}
+
+.ai-meet-row ul.select2-choices li.select2-search-field input {
+    height: 26px;
+    padding: 0;
+}
+
+/* The join control is the one thing in the row that keeps its own size. */
+.ai-meet-row .ai-join-field input {
+    width: 320px !important;
+}
+
+/* Meeting URL. Taken off the form, not out of the content: a meeting that
+   already carries one keeps it, and "Show every field" still reaches it. */
+form.rowlike.ai-chips-on [id^="formfield-"].ai-c-dropped {
+    display: none !important;
+}
+form.rowlike.ai-chips-on.ai-chips-all [id^="formfield-"].ai-c-dropped {
+    display: flex !important;
+}
+
+/* ------------------------------------------------ join the meeting
+
+   One control doing two jobs. Empty, it is a dashed outline reading "Add
+   link" and clicking it opens the box to paste into. Once there is a URL
+   it fills in, reads "Join", and opens the meeting. A separate "change"
+   sits beside it, so opening the meeting and editing the address are
+   never the same click. */
+.ai-join-field .field > label,
+.ai-join-field > label {
+    display: none;
+}
+
+.ai-join-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ai-join {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: var(--docent-control-h);
+    padding: 0 15px 0 12px;
+    border: 1px solid var(--docent-accent);
+    border-radius: 18px;
+    background: #fff;
+    color: var(--docent-accent);
+    font-size: var(--docent-label-size);
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.ai-join:hover,
+.ai-join:focus-visible {
+    background: #f7eef1;
+    text-decoration: none;
+}
+
+.ai-join svg {
+    width: 17px;
+    height: 17px;
+    flex: none;
+}
+
+.ai-join-empty {
+    border-style: dashed;
+    border-color: var(--docent-line);
+    color: var(--docent-muted);
+}
+
+.ai-join-change {
+    border: 0;
+    background: none;
+    padding: 0;
+    font-size: 12px;
+    color: var(--docent-muted);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* The address box itself: out of the way until someone asks for it, and
+   never display:none - a hidden box cannot be focused, and "change" has
+   to be able to put the cursor in it. */
+.ai-join-field input {
+    position: absolute;
+    left: -10000px;
+    width: 320px;
+}
+
+.ai-join-field.ai-join-editing {
+    position: relative;
+}
+
+.ai-join-field.ai-join-editing input {
+    position: static;
+    left: auto;
+}
+
+.ai-join-field.ai-join-editing .ai-join-cell {
+    display: none;
+}
+
+/* Two thirds, as asked: a meeting title is rarely long enough to need the
+   full width the box was taking. */
+form.rowlike.ai-chips-on [id^="formfield-"].ai-two-thirds input {
+    width: 66.6%;
+}
+
 /* The line under them describing what is required, and the rule that
    divides required from optional.
 
