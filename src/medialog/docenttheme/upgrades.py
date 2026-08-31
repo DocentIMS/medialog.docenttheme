@@ -5,6 +5,10 @@ from medialog.docenttheme.tinymce_setup import configure_tinymce
 from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
 
+import logging
+
+logger = logging.getLogger('medialog.docenttheme')
+
 BUNDLE = "docenttheme-tinymce-builder"
 
 
@@ -51,3 +55,45 @@ def upgrade_mentions_1004(setup_context):
     """
     registry = getUtility(IRegistry)
     fix_mentions_plugin(registry)
+
+
+CSS_VERSION_PARAM = "python: portal.restrictedTraverse('@@docent-css-version')()"
+
+
+def add_css_version_parameter(registry):
+    """Let the Diazo rules put a cache-busting token in the stylesheet URL.
+
+    The theme's parameters live in the registry, copied there when the theme
+    was activated - manifest.cfg is not read on each request. So adding a
+    parameter to manifest.cfg only reaches a site that is themed afresh; an
+    existing site keeps whatever it was activated with, and a rules.xml that
+    uses the new parameter fails with "Undefined variable" and the whole
+    theme transform dies.
+
+    Merges rather than replaces, for the reason a registry reimport cost a
+    tenant its settings earlier this month: whatever else a site has in
+    there is none of this step's business.
+    """
+    name = 'plone.app.theming.interfaces.IThemeSettings.parameterExpressions'
+    if name not in registry.records:
+        return
+    params = dict(registry[name] or {})
+    if params.get('css_version') == CSS_VERSION_PARAM:
+        logger.info('Theme already has the css_version parameter.')
+        return
+    params['css_version'] = CSS_VERSION_PARAM
+    registry[name] = params
+    logger.info('Added the css_version theme parameter.')
+
+
+def upgrade_css_version_1005(setup_context):
+    """Stop a changed stylesheet waiting out the browser cache.
+
+    ++theme++ resources are served with Last-Modified and no Cache-Control
+    and no ETag, so browsers fall back to heuristic freshness and hold a
+    rarely-changed stylesheet for a day or more. A tenant deployed a form
+    layout, got the old stylesheet from cache, and saw a form with none of
+    its layout. The URL now carries the stylesheet's own modification time.
+    """
+    registry = getUtility(IRegistry)
+    add_css_version_parameter(registry)

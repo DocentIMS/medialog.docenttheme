@@ -22,4 +22,14 @@
       directory="../static"
       />
 
+  <!-- The token the Diazo rules put in the stylesheet's URL, so a changed
+       stylesheet actually reaches people instead of waiting out the
+       browser's heuristic cache. See css_version.py. -->
+  <browser:page
+      name="docent-css-version"
+      for="*"
+      class=".css_version.CssVersion"
+      permission="zope2.View"
+      />
+
 </configure>

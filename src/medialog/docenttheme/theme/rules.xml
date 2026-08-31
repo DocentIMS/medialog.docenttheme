@@ -34,13 +34,13 @@
 
 <rules css:if-content="body.viewpermission-add-portal-content">
     <after css:theme-children="head">
-      <link href="{$portal_url}/++theme++docent-ims-theme/styles/add_form.css" rel="stylesheet" />
+      <link href="{$portal_url}/++theme++docent-ims-theme/styles/add_form.css?v={$css_version}" rel="stylesheet" />
     </after>
   </rules>
 
   <rules css:if-content=".template-edit">
     <after css:theme-children="head">
-      <link href="{$portal_url}/++theme++docent-ims-theme/styles/add_form.css" rel="stylesheet" />
+      <link href="{$portal_url}/++theme++docent-ims-theme/styles/add_form.css?v={$css_version}" rel="stylesheet" />
     </after>
   </rules>
 

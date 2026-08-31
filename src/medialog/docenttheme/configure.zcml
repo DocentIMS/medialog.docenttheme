@@ -93,6 +93,16 @@
       handler=".upgrades.upgrade_mentions_1004"
       />
 
+  <!-- The stylesheet URL gains a cache-busting token -->
+  <genericsetup:upgradeStep
+      source="1004"
+      destination="1005"
+      title="Let a changed stylesheet reach browsers"
+      description="++theme++ resources carry no cache headers, so a browser can hold an old stylesheet for days after a deploy. The URL now carries the file's modification time."
+      profile="medialog.docenttheme:default"
+      handler=".upgrades.upgrade_css_version_1005"
+      />
+
   <include package=".viewlets" />
 
   <plone:static
