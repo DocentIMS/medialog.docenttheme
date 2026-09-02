@@ -106,12 +106,12 @@
     <div class="container align-center black">© Copyright Docent IMS LLC  2025</div>
   </footer>
 
-  <!-- collective.sidebar retired (2026-08): its stylesheet - still served
-       from the resource registry on already-built sites - zeroes the Plone
-       toolbar by zeroing the plone-toolbar-width CSS variable. Restore
-       the standard widths; this block sits later in the document, so it wins
-       at equal specificity. Safe to remove once the sidebar bundle is
-       deregistered everywhere. -->
+  <!-- Restore Plone's standard toolbar widths. A retired add-on's
+       stylesheet, still registered on sites built before 2026-08, zeroes
+       the plone-toolbar-width variable; this block sits later in the
+       document, so it wins at equal specificity. It is a no-op on a site
+       built since, and can be deleted once no site serves that stylesheet
+       - i.e. once every server has been rebuilt. -->
   <style>
     :root {
       --plone-toolbar-width: 220px !important;
