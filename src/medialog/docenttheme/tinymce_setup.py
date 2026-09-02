@@ -44,8 +44,8 @@ EXTRAS_URL = "/++plone++medialog.docenttheme/tiny-extras.js"
 
 # The @-mention dropdown, served from DocentIMS.ActionItems - which is
 # where the endpoint that feeds it and the parser that reads its output
-# both live. It used to be pointed at medialog.notifications, which left
-# the build in docent-server-build #232: every editor then asked for a
+# both live. It used to point into a package that left the build in
+# docent-server-build #232: every editor then asked for a
 # plugin that was no longer installed, logged "Failed to load plugin:
 # mentions_autocomplete", and typing @ offered nobody.
 MENTIONS_URL = "/++plone++DocentIMS.ActionItems/tiny_mce/plugins/mentions.js"
@@ -92,8 +92,8 @@ def fix_mentions_plugin(registry):
     Existing sites carry the external_plugins map in their own registry,
     so changing OTHER_SETTINGS above only helps a fresh install. This
     rewrites what is already there: it drops the dead
-    "mentions_autocomplete" entry, which pointed into
-    medialog.notifications after that package left the build, and adds
+    "mentions_autocomplete" entry, which pointed into a package that had
+    left the build, and adds
     "DocentIMS_Mentions" pointing at DocentIMS.ActionItems - where the
     endpoint feeding the dropdown and the parser reading its output both
     live.
