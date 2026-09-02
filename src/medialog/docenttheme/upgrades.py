@@ -49,8 +49,8 @@ def upgrade_extras_1003(setup_context):
 def upgrade_mentions_1004(setup_context):
     """Point the @-mention dropdown at a plugin that exists.
 
-    Every editor was asking for it from medialog.notifications, which left
-    the build, so TinyMCE logged a failed plugin load on every form and
+    Every editor was asking for it from a package that had left the
+    build, so TinyMCE logged a failed plugin load on every form and
     typing @ offered nobody.
     """
     registry = getUtility(IRegistry)

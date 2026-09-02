@@ -83,7 +83,7 @@
       handler=".upgrades.upgrade_extras_1003"
       />
 
-  <!-- The @-mention dropdown, re-homed after medialog.notifications left -->
+  <!-- The @-mention dropdown, re-homed after its old package left -->
   <genericsetup:upgradeStep
       source="1003"
       destination="1004"

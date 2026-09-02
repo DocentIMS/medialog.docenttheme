@@ -42,6 +42,9 @@ class TestFixMentionsPlugin(unittest.TestCase):
     def test_replaces_the_plugin_that_left_the_build(self):
         registry = FakeRegistry(json.dumps({'external_plugins': {
             'mentions_autocomplete':
+                # The dead URL this upgrade exists to replace. It has to
+                # be spelled out here - a migration test cannot assert
+                # what it migrates from without naming it.
                 '/++plone++medialog.notifications/tiny_mce/plugins/index.js',
         }}))
         fix_mentions_plugin(registry)
