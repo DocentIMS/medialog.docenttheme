@@ -5,6 +5,15 @@ Changelog
 1.0a1 (unreleased)
 ------------------
 
+- Shape the Docent dialog card like the Add Task card, which is the card it
+  was meant to match: the same 980px measure, the same whitesmoke body and
+  the same drop shadow (``add_form.css``, ``.pat-formunloadalert``). The
+  follow-up answer page in particular stood as an unshadowed 480px box with
+  a white body - the add-on's ``max-width: 480px``, written for a bare no-JS
+  fallback page, was squeezing a card - and read as an unfinished panel
+  rather than a form. Inside the popup the modal is still the frame, so the
+  card drops both there. [docentims]
+
 - Fix the days pulldown on the Assign dialog, which could not be clicked
   however the "Yes" box was set. The rule that greys it shared a block with
   the one for the follow-up answer page, and the answer page's control

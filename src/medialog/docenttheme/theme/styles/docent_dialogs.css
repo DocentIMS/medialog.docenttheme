@@ -33,12 +33,37 @@
 
 /* ------------------------------------------------------------ the card */
 
+/* Shaped like the Add Task card, because that is the card these are
+   meant to match: the same measure, the same whitesmoke, the same drop
+   shadow (add_form.css, .pat-formunloadalert). Standing an unshadowed
+   480px box on the page instead read as an unfinished panel rather than
+   a form. */
 .docent-dialog {
     background: var(--docent-dialog-card);
     border-radius: var(--docent-dialog-radius);
     /* The header band runs to the card's edge, so nothing may sit
        outside the rounded corners. */
     overflow: hidden;
+    max-width: var(--docent-form-width, 980px);
+    margin: 0 auto;
+    box-shadow: 7px 7px 7px 2px #777;
+}
+
+/* Beats .transition-note-wrapper .transition-note-form { max-width: 480px }
+   in the add-on's stylesheet, which was written for a bare no-JS fallback
+   page and now squeezes a card. Overridden from here rather than edited
+   there: that file is served under a cache-keyed URL, so changing it needs
+   a profile bump and an upgrade step. */
+.transition-note-wrapper .transition-note-form.docent-dialog {
+    max-width: var(--docent-form-width, 980px);
+}
+
+/* Inside the popup the modal is the frame, so the card drops both. A
+   980px maximum would do nothing there and the shadow would be a second
+   one over the backdrop's. */
+.transition-note-dialog .docent-dialog {
+    max-width: none;
+    box-shadow: none;
 }
 
 /* The shell DocentIMS.ActionItems builds around a fetched dialog. It
@@ -86,9 +111,12 @@ dialog.transition-note-dialog:has(.docent-dialog),
 
 /* ------------------------------------------------------------ the body */
 
+/* Whitesmoke, not white: the Add Task card's body is whitesmoke and its
+   fields are white, which is what gives the fields an edge. Padding is
+   add_form.css's - less at the top, because the header band already
+   stands the content off. */
 .docent-dialog-body {
-    background: #ffffff;
-    padding: 1rem 1.4rem;
+    padding: 0.8rem 2rem 1.4rem;
 }
 
 .docent-dialog-foot {
@@ -97,7 +125,7 @@ dialog.transition-note-dialog:has(.docent-dialog),
     gap: 10px;
     background: var(--docent-dialog-card);
     border-top: 1px solid var(--docent-dialog-rule);
-    padding: 0.7rem 1.4rem;
+    padding: 0.7rem 2rem;
 }
 
 /* --------------------------------------------------- inside the body */
