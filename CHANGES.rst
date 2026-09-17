@@ -5,6 +5,29 @@ Changelog
 1.0a1 (unreleased)
 ------------------
 
+- Shape the Docent dialog card like the Add Task card, which is the card it
+  was meant to match: the same 980px measure, the same whitesmoke body, a
+  border and the same drop shadow (``add_form.css``,
+  ``.pat-formunloadalert``). The follow-up answer page in particular stood as
+  an unshadowed, unbordered 480px box with a white body - the add-on's
+  ``max-width: 480px``, written for a bare no-JS fallback page, was squeezing
+  a card - and read as an unfinished panel rather than a form. Inside the
+  popup the modal is still the frame, so the card drops those there.
+  [docentims]
+
+- Paint the dialog buttons, in the pill shape ``add_form.css`` gives Create
+  and Cancel. Outside ``.formControls`` they fell through to the theme's page
+  buttons and came out as uppercase crimson outlines - the toolbar's
+  language, not a form's. [docentims]
+
+- One title per standalone dialog page. Plone printed the content's own
+  heading above the card and the card named the same thing again two lines
+  lower ("can i set days" over "Will you meet this date?" about that very
+  task). Keyed on ``.transition-note-wrapper``, which exists only on the
+  standalone page, so it can never hide the heading of a task page a popup
+  is opened over; the Alert page keeps its heading, which carries the due
+  date the card does not repeat. [docentims]
+
 - Fix the days pulldown on the Assign dialog, which could not be clicked
   however the "Yes" box was set. The rule that greys it shared a block with
   the one for the follow-up answer page, and the answer page's control

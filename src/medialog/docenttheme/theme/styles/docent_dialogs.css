@@ -33,12 +33,53 @@
 
 /* ------------------------------------------------------------ the card */
 
+/* Shaped like the Add Task card, because that is the card these are
+   meant to match: the same measure, the same whitesmoke, the same drop
+   shadow (add_form.css, .pat-formunloadalert). Standing an unshadowed
+   480px box on the page instead read as an unfinished panel rather than
+   a form. */
 .docent-dialog {
     background: var(--docent-dialog-card);
     border-radius: var(--docent-dialog-radius);
     /* The header band runs to the card's edge, so nothing may sit
        outside the rounded corners. */
     overflow: hidden;
+    max-width: var(--docent-form-width, 980px);
+    margin: 0 auto;
+    border: 1px solid var(--docent-dialog-rule);
+    box-shadow: 7px 7px 7px 2px #777;
+}
+
+/* Beats .transition-note-wrapper .transition-note-form { max-width: 480px }
+   in the add-on's stylesheet, which was written for a bare no-JS fallback
+   page and now squeezes a card. Overridden from here rather than edited
+   there: that file is served under a cache-keyed URL, so changing it needs
+   a profile bump and an upgrade step. */
+.transition-note-wrapper .transition-note-form.docent-dialog {
+    max-width: var(--docent-form-width, 980px);
+}
+
+/* Inside the popup the modal is the frame, so the card drops these. A
+   980px maximum would do nothing there, and the shadow would be a second
+   one over the backdrop's. */
+.transition-note-dialog .docent-dialog {
+    max-width: none;
+    box-shadow: none;
+    border: 0;
+}
+
+/* One title per page. On a standalone dialog page Plone prints the
+   content's own heading above the card, and the card then names the same
+   thing again two lines lower - "can i set days" over "Will you meet this
+   date?" about that very task.
+
+   Keyed on .transition-note-wrapper, which exists only on the standalone
+   page: action_items.js lifts the <form> alone into the popup and leaves
+   the wrapper behind, so this can never hide the heading of the task page
+   a dialog is opened over. The Alert page keeps its heading - that one
+   carries the due date and the task, which the card does not repeat. */
+body:has(.transition-note-wrapper .docent-dialog) h1.documentFirstHeading {
+    display: none;
 }
 
 /* The shell DocentIMS.ActionItems builds around a fetched dialog. It
@@ -86,18 +127,73 @@ dialog.transition-note-dialog:has(.docent-dialog),
 
 /* ------------------------------------------------------------ the body */
 
+/* Whitesmoke, not white: the Add Task card's body is whitesmoke and its
+   fields are white, which is what gives the fields an edge. Padding is
+   add_form.css's - less at the top, because the header band already
+   stands the content off. */
 .docent-dialog-body {
-    background: #ffffff;
-    padding: 1rem 1.4rem;
+    padding: 0.8rem 2rem 1.4rem;
 }
 
 .docent-dialog-foot {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
+    gap: 8px;
     background: var(--docent-dialog-card);
     border-top: 1px solid var(--docent-dialog-rule);
-    padding: 0.7rem 1.4rem;
+    padding: 0.9rem 2rem;
+}
+
+/* The buttons, in the shape add_form.css gives Create and Cancel: a pill,
+   8px by 22px, semibold. Painted here rather than left to the cascade -
+   outside .formControls these fell through to the theme's page buttons and
+   came out as uppercase crimson outlines, which is the toolbar's language,
+   not a form's. */
+.docent-dialog-foot .btn,
+.docent-dialog-foot button,
+.docent-dialog-foot input[type="submit"] {
+    border-radius: 18px;
+    padding: 8px 22px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: normal;
+    line-height: 1.4;
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.docent-dialog-foot .btn-primary,
+.docent-dialog-foot button[type="submit"],
+.docent-dialog-foot input[type="submit"] {
+    background: var(--docent-accent, #64041f);
+    border-color: var(--docent-accent, #64041f);
+    color: #ffffff;
+}
+
+.docent-dialog-foot .btn-primary:hover,
+.docent-dialog-foot button[type="submit"]:hover,
+.docent-dialog-foot input[type="submit"]:hover {
+    filter: brightness(1.25);
+}
+
+.docent-dialog-foot .btn-secondary,
+.docent-dialog-foot .transition-note-cancel {
+    background: #ffffff;
+    border-color: var(--docent-line, #d7dbe3);
+    color: var(--docent-dialog-ink, #8B6914);
+}
+
+.docent-dialog-foot .btn-secondary:hover,
+.docent-dialog-foot .transition-note-cancel:hover {
+    background: #f6f2ec;
+}
+
+.docent-dialog-foot .btn:focus-visible,
+.docent-dialog-foot button:focus-visible {
+    outline: 2px solid var(--docent-accent, #64041f);
+    outline-offset: 2px;
 }
 
 /* --------------------------------------------------- inside the body */
