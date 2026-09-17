@@ -5,6 +5,15 @@ Changelog
 1.0a1 (unreleased)
 ------------------
 
+- Fix the days pulldown on the Assign dialog, which could not be clicked
+  however the "Yes" box was set. The rule that greys it shared a block with
+  the one for the follow-up answer page, and the answer page's control
+  (``#answer-more-time``) does not exist on the Assign form - so
+  ``:not(:has(#answer-more-time:checked))`` was true there for the simple
+  reason that it was not there at all, and matched always. Each rule is now
+  guarded by ``:has()`` on the control it depends on. The answer page's date
+  picker was greyed the same way and is fixed with it. [docentims]
+
 - Give the Docent dialogs one header instead of four. Assign, the workflow
   note, the follow-up question and the Alert page each carried their own copy
   of the Add Task header in an inline ``<style>``, and the copies had drifted.
