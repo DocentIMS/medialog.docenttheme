@@ -44,6 +44,16 @@
     </after>
   </rules>
 
+  <!-- Docent dialogs (Assign, the workflow note, the follow-up question,
+       the Alert page). On EVERY page, deliberately: the Assign form is
+       fetched and injected into a <dialog> on the page you are already
+       looking at, so a stylesheet linked on the form's own URL is thrown
+       away with the rest of that response's <head>. Only the parent
+       page's stylesheet reaches it. -->
+  <after css:theme-children="head">
+    <link href="{$portal_url}/++theme++docent-ims-theme/styles/docent_dialogs.css?v={$css_version}" rel="stylesheet" />
+  </after>
+
 
   <rules css:if-content="body.viewpermission-view, body.viewpermission-none">
 

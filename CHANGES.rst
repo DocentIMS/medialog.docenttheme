@@ -5,6 +5,18 @@ Changelog
 1.0a1 (unreleased)
 ------------------
 
+- Give the Docent dialogs one header instead of four. Assign, the workflow
+  note, the follow-up question and the Alert page each carried their own copy
+  of the Add Task header in an inline ``<style>``, and the copies had drifted.
+  ``styles/docent_dialogs.css`` now owns that band, using the same numbers
+  ``add_form.css`` uses on ``h1.documentFirstHeading``, and ``rules.xml``
+  links it on every page -- not on the dialogs' own URLs, because the Assign
+  form is fetched and injected into a ``<dialog>`` on the page you are
+  already looking at, so a stylesheet linked in its own response's ``<head>``
+  is discarded with it. Also removes the white gutter that showed around the
+  Assign form: the shell padded by 26px while the header bled by 1rem.
+  [docentims]
+
 - Drop the two external Google Fonts ``@import`` lines from the production
   stylesheet (Open Sans, Roboto Slab, Bitter, Encode Sans). They pulled ~76 KiB
   of webfonts from ``fonts.gstatic.com`` and, being ``@import`` rules inside the
