@@ -858,3 +858,23 @@ form.rowlike.ai-chips-on .ai-still-needed .select2-choice {
 form.rowlike.ai-chips-on .ai-still-needed .form-control:focus {
     border-color: var(--docent-accent, #64041f);
 }
+
+/* The rich-text fields, which the tint missed entirely.
+
+   .ai-still-needed goes on the formfield wrapper and the rules above tint
+   the .form-control inside it. On a rich-text field that control is the
+   <textarea> TinyMCE replaced - display:none, behind the editor - so the
+   box was tinted and nobody could see it. Full Explanation is required on
+   every task, and it was the one required field on the form with no mark
+   on it at all.
+
+   Tint what is actually on the screen: TinyMCE's own frame. The toolbar
+   sits inside that border, so only the border and the editing area are
+   coloured - the same treatment the plain boxes get. */
+form.rowlike.ai-chips-on .ai-still-needed .tox-tinymce {
+    border-color: #c0405a;
+}
+
+form.rowlike.ai-chips-on .ai-still-needed .tox-tinymce .tox-edit-area__iframe {
+    background-color: #fdf7f8;
+}
