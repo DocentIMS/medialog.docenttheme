@@ -1,0 +1,165 @@
+/* =====================================================================
+   Docent dialogs — Assign, the workflow note, the follow-up question,
+   and the Alert page.
+
+   These are hand-written browser views in DocentIMS.ActionItems, not
+   z3c.form add/edit forms, so add_form.css never reaches them: Diazo
+   links that file only on add and edit pages. Each template had grown
+   its own copy of the Add Task header - three copies by the time anyone
+   counted - and they had already drifted apart.
+
+   THIS FILE OWNS HOW THOSE DIALOGS LOOK, and rules.xml links it on
+   every page rather than on a URL pattern. That is not laziness: the
+   Assign form is fetched and injected into a <dialog> on the page you
+   were already looking at, so a stylesheet linked on the form's own URL
+   is discarded with the rest of that response's <head>. The parent
+   page's stylesheet is the only one that reaches it.
+
+   The numbers below are the ones add_form.css uses for the Add Task
+   heading. They are repeated rather than imported because the two files
+   are never loaded together; if you change one, change the other.
+   ===================================================================== */
+
+:root {
+    /* The cream heading band and the logo's own brown, from
+       add_form.css. --docent-accent is set per site by css-viewlet.pt in
+       DocentIMS.ActionItems; the fallback here matches that file's. */
+    --docent-dialog-head: #f9f2e8;
+    --docent-dialog-ink: #8B6914;
+    --docent-dialog-card: whitesmoke;
+    --docent-dialog-rule: #e3ded5;
+    --docent-dialog-radius: 7px;
+}
+
+/* ------------------------------------------------------------ the card */
+
+.docent-dialog {
+    background: var(--docent-dialog-card);
+    border-radius: var(--docent-dialog-radius);
+    /* The header band runs to the card's edge, so nothing may sit
+       outside the rounded corners. */
+    overflow: hidden;
+}
+
+/* The shell DocentIMS.ActionItems builds around a fetched dialog. It
+   used to carry 24px 26px of white padding, which showed as a white
+   gutter around the header band - the band bled by 1rem, the shell
+   padded by 26px, and the difference was visible on every edge. The
+   card owns its edges now. */
+dialog.transition-note-dialog:has(.docent-dialog),
+.transition-note-dialog:has(.docent-dialog) {
+    padding: 0;
+    background: transparent;
+    border-radius: var(--docent-dialog-radius);
+}
+
+/* ---------------------------------------------------------- the header */
+
+.docent-dialog-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--docent-dialog-head);
+    padding: 0.5rem 1.4rem;
+}
+
+.docent-dialog-head .docent-dialog-title {
+    margin: 0;
+    color: var(--docent-dialog-ink);
+    font-size: 1.05rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    line-height: 1.3;
+    border-bottom: 0 none;
+}
+
+/* The round mark, drawn on the heading's own row. A background on
+   ::before rather than an <img>, so a template needs nothing but the
+   heading - same as add_form.css does it on h1.documentFirstHeading. */
+.docent-dialog-head::before {
+    content: "";
+    flex: 0 0 30px;
+    width: 30px;
+    height: 30px;
+    background: url(../images/docent-round.svg) center / contain no-repeat;
+}
+
+/* ------------------------------------------------------------ the body */
+
+.docent-dialog-body {
+    background: #ffffff;
+    padding: 1rem 1.4rem;
+}
+
+.docent-dialog-foot {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    background: var(--docent-dialog-card);
+    border-top: 1px solid var(--docent-dialog-rule);
+    padding: 0.7rem 1.4rem;
+}
+
+/* --------------------------------------------------- inside the body */
+
+/* A "N days before due date" sentence is one sentence. Plone renders a
+   select as a full-width block, which broke it across three lines. */
+.docent-dialog .assign-followup-when select,
+.docent-dialog .docent-inline-select {
+    display: inline-block;
+    width: auto;
+    margin: 0 0.35rem;
+    vertical-align: baseline;
+}
+
+/* Off until the choice that needs it is made. CSS rather than script:
+   these dialogs are injected as HTML, and an injected <script> is never
+   executed - so the script version of this ran nowhere. pointer-events
+   does the other half, making the control unclickable while it means
+   nothing; it still submits, which is correct, because the value only
+   counts when the box beside it is ticked. */
+.docent-dialog .assign-followup:not(:has(#follow_up_alerts:checked))
+                .assign-followup-when,
+.docent-dialog .assign-followup:not(:has(#answer-more-time:checked))
+                .assign-followup-when {
+    opacity: 0.45;
+    pointer-events: none;
+}
+
+.docent-dialog .assign-followup-when {
+    transition: opacity 0.15s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .docent-dialog .assign-followup-when { transition: none; }
+}
+
+/* ------------------------------------------------------------- the Alert
+
+   The Alert page is the same card, with one addition: a crimson rail down
+   its left edge. In a list of Alerts that rail is what marks one out as
+   Docent's own, so it stays. */
+
+.docent-dialog--rail {
+    border-left: 4px solid var(--docent-accent, #64041f);
+}
+
+/* The message keeps Plone's portalMessage/statusmessage/alert classes,
+   because other things key on them - so these rules take back the
+   background, border and padding Bootstrap puts on them. The card is the
+   surface now, and two nested boxes read as a mistake. */
+.docent-dialog .ai-alert {
+    background: none;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    color: #3f3a35;
+}
+
+.docent-dialog .ai-alert-must-answer {
+    margin: 12px 0 0 0;
+    padding-top: 10px;
+    border-top: 1px solid var(--docent-dialog-rule);
+    font-size: 0.8rem;
+    color: #8a837c;
+}
