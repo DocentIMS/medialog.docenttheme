@@ -271,3 +271,29 @@ dialog.transition-note-dialog:has(.docent-dialog),
     font-size: 0.8rem;
     color: #8a837c;
 }
+
+/* ------------------------------------------------ focus, not an error
+
+   The dialogs autofocus their first field, and the theme bundles
+   html5up-editorial's form styling, which draws a focused input in
+   salmon:
+
+       textarea:focus { border-color: #f56a6a;
+                        box-shadow: 0 0 0 1px #f56a6a }
+
+   So the Accept form opened with a red box around a note that is not
+   required and not wrong - the one form on which an empty box is a
+   perfectly good answer. Red is the colour this product uses for a field
+   that still needs filling in (add_form.css, .ai-still-needed); spending
+   it on "the cursor is here" leaves it meaning nothing.
+
+   Focus still shows - taking the ring off would be worse than the wrong
+   colour - in the project's own colour. */
+.docent-dialog textarea:focus,
+.docent-dialog input:focus,
+.docent-dialog select:focus,
+.docent-dialog .form-control:focus,
+.docent-dialog .form-select:focus {
+    border-color: var(--docent-accent, #64041f);
+    box-shadow: 0 0 0 1px var(--docent-accent, #64041f);
+}
