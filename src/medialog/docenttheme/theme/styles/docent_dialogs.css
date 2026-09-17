@@ -46,6 +46,7 @@
     overflow: hidden;
     max-width: var(--docent-form-width, 980px);
     margin: 0 auto;
+    border: 1px solid var(--docent-dialog-rule);
     box-shadow: 7px 7px 7px 2px #777;
 }
 
@@ -58,12 +59,27 @@
     max-width: var(--docent-form-width, 980px);
 }
 
-/* Inside the popup the modal is the frame, so the card drops both. A
-   980px maximum would do nothing there and the shadow would be a second
+/* Inside the popup the modal is the frame, so the card drops these. A
+   980px maximum would do nothing there, and the shadow would be a second
    one over the backdrop's. */
 .transition-note-dialog .docent-dialog {
     max-width: none;
     box-shadow: none;
+    border: 0;
+}
+
+/* One title per page. On a standalone dialog page Plone prints the
+   content's own heading above the card, and the card then names the same
+   thing again two lines lower - "can i set days" over "Will you meet this
+   date?" about that very task.
+
+   Keyed on .transition-note-wrapper, which exists only on the standalone
+   page: action_items.js lifts the <form> alone into the popup and leaves
+   the wrapper behind, so this can never hide the heading of the task page
+   a dialog is opened over. The Alert page keeps its heading - that one
+   carries the due date and the task, which the card does not repeat. */
+body:has(.transition-note-wrapper .docent-dialog) h1.documentFirstHeading {
+    display: none;
 }
 
 /* The shell DocentIMS.ActionItems builds around a fetched dialog. It
@@ -122,10 +138,62 @@ dialog.transition-note-dialog:has(.docent-dialog),
 .docent-dialog-foot {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
+    gap: 8px;
     background: var(--docent-dialog-card);
     border-top: 1px solid var(--docent-dialog-rule);
-    padding: 0.7rem 2rem;
+    padding: 0.9rem 2rem;
+}
+
+/* The buttons, in the shape add_form.css gives Create and Cancel: a pill,
+   8px by 22px, semibold. Painted here rather than left to the cascade -
+   outside .formControls these fell through to the theme's page buttons and
+   came out as uppercase crimson outlines, which is the toolbar's language,
+   not a form's. */
+.docent-dialog-foot .btn,
+.docent-dialog-foot button,
+.docent-dialog-foot input[type="submit"] {
+    border-radius: 18px;
+    padding: 8px 22px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: normal;
+    line-height: 1.4;
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.docent-dialog-foot .btn-primary,
+.docent-dialog-foot button[type="submit"],
+.docent-dialog-foot input[type="submit"] {
+    background: var(--docent-accent, #64041f);
+    border-color: var(--docent-accent, #64041f);
+    color: #ffffff;
+}
+
+.docent-dialog-foot .btn-primary:hover,
+.docent-dialog-foot button[type="submit"]:hover,
+.docent-dialog-foot input[type="submit"]:hover {
+    filter: brightness(1.25);
+}
+
+.docent-dialog-foot .btn-secondary,
+.docent-dialog-foot .transition-note-cancel {
+    background: #ffffff;
+    border-color: var(--docent-line, #d7dbe3);
+    color: var(--docent-dialog-ink, #8B6914);
+}
+
+.docent-dialog-foot .btn-secondary:hover,
+.docent-dialog-foot .transition-note-cancel:hover {
+    background: #f6f2ec;
+}
+
+.docent-dialog-foot .btn:focus-visible,
+.docent-dialog-foot button:focus-visible {
+    outline: 2px solid var(--docent-accent, #64041f);
+    outline-offset: 2px;
 }
 
 /* --------------------------------------------------- inside the body */
