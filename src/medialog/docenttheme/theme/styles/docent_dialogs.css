@@ -117,10 +117,22 @@ dialog.transition-note-dialog:has(.docent-dialog),
    executed - so the script version of this ran nowhere. pointer-events
    does the other half, making the control unclickable while it means
    nothing; it still submits, which is correct, because the value only
-   counts when the box beside it is ticked. */
-.docent-dialog .assign-followup:not(:has(#follow_up_alerts:checked))
-                .assign-followup-when,
-.docent-dialog .assign-followup:not(:has(#answer-more-time:checked))
+   counts when the control beside it says so.
+
+   Each rule is guarded by :has(<the control>) as well as
+   :not(:has(<the control>:checked)). Without that guard the second rule
+   matched the Assign form too - #answer-more-time exists only on the
+   answer page, so "not checked" was true there for the simple reason that
+   it was not there at all - and the days pulldown was greyed and
+   unclickable however the tick box was set. */
+
+.docent-dialog .assign-followup:has(#follow_up_alerts):not(:has(#follow_up_alerts:checked))
+                .assign-followup-when {
+    opacity: 0.45;
+    pointer-events: none;
+}
+
+.docent-dialog .assign-followup:has(#answer-more-time):not(:has(#answer-more-time:checked))
                 .assign-followup-when {
     opacity: 0.45;
     pointer-events: none;
