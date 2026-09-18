@@ -272,6 +272,17 @@ dialog.transition-note-dialog:has(.docent-dialog),
     color: #8a837c;
 }
 
+/* "You have read this Alert." Same quiet note as the one above, in the
+   same place the "Got it" button stood, so a cleared Alert reads as
+   finished rather than as a page that lost a control. */
+.docent-dialog .ai-alert-read {
+    margin: 12px 0 0 0;
+    padding-top: 10px;
+    border-top: 1px solid var(--docent-dialog-rule);
+    font-size: 0.8rem;
+    color: #1d7a45;
+}
+
 /* ------------------------------------------------ focus, not an error
 
    The dialogs autofocus their first field, and the theme bundles
