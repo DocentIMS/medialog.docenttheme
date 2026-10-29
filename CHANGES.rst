@@ -28,6 +28,23 @@ Changelog
   under 1 MB. ``theme.css`` is the source now; ``scripts/minify_theme.py``
   regenerates ``theme.min.css`` from it (``theme/README.rst``). [docentims]
 
+- Drop the Editorial template's layout CSS that matched nothing on the site:
+  ``#sidebar``, ``#menu``, ``#banner``, ``#main``, ``#search``, ``#wrapper``,
+  ``#footer``, ``.features``, ``.posts`` article grid, ``.mini-posts``,
+  ``.box``, ``.contact``, ``.inner``, ``.toggle``, the ``.gtr-*`` / ``.aln-*``
+  / ``.off-*`` / ``.col-N-{size}`` / ``.imp-*`` grid variants and the
+  ``is-preload`` / ``is-resizing`` hooks - 1,660 lines whose ids and classes
+  appear in no template, rule, script or Python of this theme or of
+  DocentIMS.ActionItems. ``theme.css`` goes from 17,037 lines to 15,160.
+  [docentims]
+
+- The theme stylesheet URL now carries the ``css_version`` cache token:
+  ``rules.xml`` links ``styles/theme.min.css?v=...`` in place of
+  ``manifest.cfg``'s ``production-css`` (which cannot carry one), so a deploy
+  reaches browsers without a hard refresh - the same mechanism
+  ``add_form.css`` and ``docent_dialogs.css`` already use. The TinyMCE
+  content stylesheet still comes from ``manifest.cfg``. [docentims]
+
 - Shape the Docent dialog card like the Add Task card, which is the card it
   was meant to match: the same 980px measure, the same whitesmoke body, a
   border and the same drop shadow (``add_form.css``,
