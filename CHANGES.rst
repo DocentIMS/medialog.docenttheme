@@ -5,6 +5,29 @@ Changelog
 1.0a1 (unreleased)
 ------------------
 
+- The standard Docent theme. Inter for all text (self-hosted variable
+  webfont, served from ``++plone++DocentIMS.ActionItems/fonts/``), in place
+  of Roboto Slab, Open Sans, Bitter, Encode Sans and the Helvetica stack; a
+  ``--docent-*`` token set in ``theme.css`` (page, surfaces, borders, ink,
+  brand, action teal, state colours, radii, shadows); the ``#d54545`` navbar
+  red becomes the brand crimson, the Editorial coral and the three link blues
+  become the action teal, Editorial's cool greys become the warm ink and
+  border tokens, the footer sits on the warm surface under a brand rule, and
+  the page ground is ``--docent-page``. The uppercase-and-tracked eyebrows,
+  menus and outline buttons, the coral h2 underline and the coral header rule
+  are gone. ``add_form.css`` and ``docent_dialogs.css`` read the same tokens.
+  [docentims]
+
+- Delete everything in the theme that nothing loads: the html5up-editorial
+  template source (3.6 MB of sass, js, Font Awesome copies and webfonts), the
+  dead SCSS build chain and its maps, ``package.json``, the Sass cache,
+  ``rules-kopi.xml``, the TinyMCE templates, the local Barceloneta touch
+  icons, ``fontawesome-all.min.css`` (no page linked it and no webfonts were
+  shipped, so the Font Awesome glyph rules in ``theme.css`` drew nothing;
+  those rules go too) and every ``.DS_Store``. ``src/`` goes from 6.7 MB to
+  under 1 MB. ``theme.css`` is the source now; ``scripts/minify_theme.py``
+  regenerates ``theme.min.css`` from it (``theme/README.rst``). [docentims]
+
 - Shape the Docent dialog card like the Add Task card, which is the card it
   was meant to match: the same 980px measure, the same whitesmoke body, a
   border and the same drop shadow (``add_form.css``,

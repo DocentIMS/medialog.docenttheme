@@ -39,11 +39,11 @@
 	/* Colour. --docent-accent is the project colour; css-viewlet.pt in
 	   DocentIMS.ActionItems sets it per site from the registry, and this
 	   is the fallback for sites that do not. */
-	--docent-accent: #64041f;
-	--docent-line: #d7dbe3;
-	--docent-label-colour: #05386B;
-	--docent-muted: #77809a;
-	--docent-band: rgb(95, 46, 46);
+	--docent-accent: var(--docent-brand, #64041f);
+	--docent-line: var(--docent-border, #dfd9d1);
+	--docent-label-colour: var(--docent-ink, #212529);
+	--docent-muted: var(--docent-ink-muted, #7a736c);
+	--docent-band: var(--docent-brand, #64041f);
 }
 
 /* ---------------------------------------------------------------- page */
@@ -54,15 +54,15 @@
     margin-left: -30px !important;
 }
 
-#content #fieldset {background: white !important}
+#content #fieldset {background: var(--docent-surface) !important}
 
 #viewlet-below-content #fieldset,
-#viewlet-below-content {background: white; padding: 0; margin: 0}
+#viewlet-below-content {background: var(--docent-surface); padding: 0; margin: 0}
 
 .template-edit .outer-wrapper,
 .template-action_items .outer-wrapper,
 .viewpermission-add-portal-content .outer-wrapper {
-    background-color: #999 !important;
+    background-color: var(--docent-page) !important;
     min-height: 100vh;
 }
 
@@ -81,7 +81,7 @@
    used to be - the wordmark was 110px, the band 1.3rem. */
 
 .imagediv {
-    background-color: #fff;
+    background-color: var(--docent-surface);
     text-align: center;
     max-width: var(--docent-form-width);
     margin: 0 auto;
@@ -117,7 +117,7 @@ h2.sit_tit {
 .viewpermission-add-portal-content h1.documentFirstHeading {
     max-width: var(--docent-form-width);
     margin: 0 auto;
-    background-color: #f9f2e8;
+    background-color: var(--docent-surface-cream);
     padding: 0.5rem 1.4rem;
     /* The logo's own brown. The heading names the thing being made, which
        is worth reading once and then ignoring - so it takes the colour of
@@ -152,14 +152,14 @@ h2.sit_tit {
 .viewpermission-add-portal-content .pat-formunloadalert,
 .template-action_items .pat-formunloadalert,
 .template-edit .pat-formunloadalert {
-    background: whitesmoke;
+    background: var(--docent-surface);
     max-width: var(--docent-form-width);
     margin: auto;
     /* Less at the top than the sides: measured 52px between the bottom of
        the project band and the top of the Title label, which is a lot of
        nothing before the form starts. Halved. */
     padding: 0.4rem 2rem 2rem;
-    box-shadow: 7px 7px 7px 2px #777;
+    box-shadow: var(--docent-shadow-card-hover);
 }
 
 /* ------------------------------------------------------------- tabs */
@@ -167,22 +167,22 @@ h2.sit_tit {
 .pat-formunloadalert .form-label,
 .pat-formunloadalert legend,
 legend {
-    color: black;
+    color: var(--docent-ink);
     margin-right: 1rem;
     line-height: 200%;
 }
 
 .autotoc-nav a {
-    color: black;
+    color: var(--docent-ink);
 }
 
 .pat-autotoc.autotabs a.active,
 .pat-autotoc.autotabs a:hover {
-    border-color: black;
+    border-color: var(--docent-ink);
     cursor: default;
     font-weight: bold;
-    border-bottom-color: whitesmoke;
-    background: #EEE;
+    border-bottom-color: var(--docent-surface);
+    background: var(--docent-border);
 }
 
 /* ------------------------------------------------------------- fields
@@ -461,7 +461,7 @@ form.rowlike:not(.ai-submitted) .form-select:invalid {
 
 #content .formControls .ai-missing b {
     font-weight: 600;
-    color: #44506a;
+    color: var(--docent-ink);
 }
 
 /* --------------------------------------------------- Add Task: chips
@@ -484,15 +484,15 @@ form.rowlike:not(.ai-submitted) .form-select:invalid {
     font-weight: 600;
     line-height: 1.2;
     color: var(--docent-accent);
-    background: #fff;
-    border: 1px solid #e0d2d7;
+    background: var(--docent-surface);
+    border: 1px solid var(--docent-brand-edge);
     border-radius: 18px;
     padding: 9px 16px;
     cursor: pointer;
 }
 
 .ai-chip:hover {
-    background: #f7eef1;
+    background: var(--docent-brand-tint);
 }
 
 .ai-chip:focus-visible {
@@ -504,7 +504,7 @@ form.rowlike:not(.ai-submitted) .form-select:invalid {
 .ai-chip[aria-pressed="true"] {
     background: var(--docent-accent);
     border-color: var(--docent-accent);
-    color: #fff;
+    color: var(--docent-surface);
 }
 
 /* The way out of the chips is not one of the chips. */
@@ -723,7 +723,7 @@ form.rowlike.ai-chips-on .ai-meet-invitees > div.mb-3 {
     padding: 0 15px 0 12px;
     border: 1px solid var(--docent-accent);
     border-radius: 18px;
-    background: #fff;
+    background: var(--docent-surface);
     color: var(--docent-accent);
     font-size: var(--docent-label-size);
     font-weight: 600;
@@ -734,7 +734,7 @@ form.rowlike.ai-chips-on .ai-meet-invitees > div.mb-3 {
 
 .ai-join:hover,
 .ai-join:focus-visible {
-    background: #f7eef1;
+    background: var(--docent-brand-tint);
     text-decoration: none;
 }
 
@@ -834,8 +834,8 @@ form.rowlike.ai-chips-on label .required {
 form.rowlike.ai-chips-on .ai-still-needed .form-control,
 form.rowlike.ai-chips-on .ai-still-needed .form-control:invalid,
 form.rowlike.ai-chips-on .ai-still-needed .form-select:invalid {
-    border-color: #c0405a;
-    background: #fdf7f8;
+    border-color: var(--docent-danger);
+    background: var(--docent-danger-tint);
 }
 
 /* Meeting Location is a Select2 token box, and DocentIMS.ActionItems'
@@ -850,13 +850,13 @@ form.rowlike.ai-chips-on .ai-still-needed .form-select:invalid {
    selector is the more specific of the two, so !important settles it. */
 form.rowlike.ai-chips-on .ai-still-needed .select2-choices,
 form.rowlike.ai-chips-on .ai-still-needed .select2-choice {
-    border-color: #c0405a !important;
-    background: #fdf7f8 !important;
+    border-color: var(--docent-danger) !important;
+    background: var(--docent-danger-tint) !important;
 }
 
 /* Focus still belongs to the project colour, tinted or not. */
 form.rowlike.ai-chips-on .ai-still-needed .form-control:focus {
-    border-color: var(--docent-accent, #64041f);
+    border-color: var(--docent-accent, var(--docent-brand));
 }
 
 /* The rich-text fields, which the tint missed entirely.
@@ -872,9 +872,9 @@ form.rowlike.ai-chips-on .ai-still-needed .form-control:focus {
    sits inside that border, so only the border and the editing area are
    coloured - the same treatment the plain boxes get. */
 form.rowlike.ai-chips-on .ai-still-needed .tox-tinymce {
-    border-color: #c0405a;
+    border-color: var(--docent-danger);
 }
 
 form.rowlike.ai-chips-on .ai-still-needed .tox-tinymce .tox-edit-area__iframe {
-    background-color: #fdf7f8;
+    background-color: var(--docent-danger-tint);
 }

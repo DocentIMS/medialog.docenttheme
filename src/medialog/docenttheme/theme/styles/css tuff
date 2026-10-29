@@ -1,7 +1,0 @@
-
-element.style {
-}
-.pat-formunloadalert legend {
-    color: black;
-}
-.pat-formunloadalert .form-label, .pat-formunloadalert legend, legend
