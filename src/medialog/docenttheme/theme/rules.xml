@@ -18,6 +18,15 @@
     <link href="{$portal_url}/++plone++DocentIMS.ActionItems/css/tinymce-formats.css" rel="stylesheet" type="text/css" />
   </after>
 
+  <!-- The theme stylesheet. Linked from here rather than as manifest.cfg's
+       production-css so the URL can carry the css_version token: a plain
+       URL is held by the browser's heuristic cache for a day or more after
+       a deploy (see browser/css_version.py). First, so that add_form.css
+       and docent_dialogs.css below still win the cascade. -->
+  <after css:theme-children="head">
+    <link href="{$portal_url}/++theme++docent-ims-theme/styles/theme.min.css?v={$css_version}" rel="stylesheet" type="text/css" />
+  </after>
+
   <!-- DocentIMS: grey out and disable the "Add New User" button on the
        Users control panel (@@usergroup-userprefs). Visual + unclickable. -->
   <after css:theme-children="head">

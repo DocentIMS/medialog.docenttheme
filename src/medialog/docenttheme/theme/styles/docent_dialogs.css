@@ -24,10 +24,10 @@
     /* The cream heading band and the logo's own brown, from
        add_form.css. --docent-accent is set per site by css-viewlet.pt in
        DocentIMS.ActionItems; the fallback here matches that file's. */
-    --docent-dialog-head: #f9f2e8;
+    --docent-dialog-head: var(--docent-surface-cream, #f9f2e8);
     --docent-dialog-ink: #8B6914;
-    --docent-dialog-card: whitesmoke;
-    --docent-dialog-rule: #e3ded5;
+    --docent-dialog-card: var(--docent-surface, #ffffff);
+    --docent-dialog-rule: var(--docent-border, #dfd9d1);
     --docent-dialog-radius: 7px;
 }
 
@@ -47,7 +47,7 @@
     max-width: var(--docent-form-width, 980px);
     margin: 0 auto;
     border: 1px solid var(--docent-dialog-rule);
-    box-shadow: 7px 7px 7px 2px #777;
+    box-shadow: var(--docent-shadow-card-hover);
 }
 
 /* Beats .transition-note-wrapper .transition-note-form { max-width: 480px }
@@ -167,9 +167,9 @@ dialog.transition-note-dialog:has(.docent-dialog),
 .docent-dialog-foot .btn-primary,
 .docent-dialog-foot button[type="submit"],
 .docent-dialog-foot input[type="submit"] {
-    background: var(--docent-accent, #64041f);
-    border-color: var(--docent-accent, #64041f);
-    color: #ffffff;
+    background: var(--docent-accent, var(--docent-brand));
+    border-color: var(--docent-accent, var(--docent-brand));
+    color: var(--docent-surface);
 }
 
 .docent-dialog-foot .btn-primary:hover,
@@ -180,19 +180,19 @@ dialog.transition-note-dialog:has(.docent-dialog),
 
 .docent-dialog-foot .btn-secondary,
 .docent-dialog-foot .transition-note-cancel {
-    background: #ffffff;
-    border-color: var(--docent-line, #d7dbe3);
+    background: var(--docent-surface);
+    border-color: var(--docent-line, var(--docent-border));
     color: var(--docent-dialog-ink, #8B6914);
 }
 
 .docent-dialog-foot .btn-secondary:hover,
 .docent-dialog-foot .transition-note-cancel:hover {
-    background: #f6f2ec;
+    background: var(--docent-surface-warm);
 }
 
 .docent-dialog-foot .btn:focus-visible,
 .docent-dialog-foot button:focus-visible {
-    outline: 2px solid var(--docent-accent, #64041f);
+    outline: 2px solid var(--docent-accent, var(--docent-brand));
     outline-offset: 2px;
 }
 
@@ -249,7 +249,7 @@ dialog.transition-note-dialog:has(.docent-dialog),
    Docent's own, so it stays. */
 
 .docent-dialog--rail {
-    border-left: 4px solid var(--docent-accent, #64041f);
+    border-left: 4px solid var(--docent-accent, var(--docent-brand));
 }
 
 /* The message keeps Plone's portalMessage/statusmessage/alert classes,
@@ -261,7 +261,7 @@ dialog.transition-note-dialog:has(.docent-dialog),
     border: 0;
     margin: 0;
     padding: 0;
-    color: #3f3a35;
+    color: var(--docent-ink);
 }
 
 .docent-dialog .ai-alert-must-answer {
@@ -269,7 +269,7 @@ dialog.transition-note-dialog:has(.docent-dialog),
     padding-top: 10px;
     border-top: 1px solid var(--docent-dialog-rule);
     font-size: 0.8rem;
-    color: #8a837c;
+    color: var(--docent-ink-muted);
 }
 
 /* "You have read this Alert." Same quiet note as the one above, in the
@@ -280,19 +280,15 @@ dialog.transition-note-dialog:has(.docent-dialog),
     padding-top: 10px;
     border-top: 1px solid var(--docent-dialog-rule);
     font-size: 0.8rem;
-    color: #1d7a45;
+    color: var(--docent-success);
 }
 
 /* ------------------------------------------------ focus, not an error
 
-   The dialogs autofocus their first field, and the theme bundles
-   html5up-editorial's form styling, which draws a focused input in
-   salmon:
-
-       textarea:focus { border-color: #f56a6a;
-                        box-shadow: 0 0 0 1px #f56a6a }
-
-   So the Accept form opened with a red box around a note that is not
+   The dialogs autofocus their first field, and the theme used to bundle
+   html5up-editorial's form styling, which drew a focused input in salmon
+   (it is teal now, the standard action colour, but still not this form's
+   colour). So the Accept form opened with a red box around a note that is not
    required and not wrong - the one form on which an empty box is a
    perfectly good answer. Red is the colour this product uses for a field
    that still needs filling in (add_form.css, .ai-still-needed); spending
@@ -305,6 +301,6 @@ dialog.transition-note-dialog:has(.docent-dialog),
 .docent-dialog select:focus,
 .docent-dialog .form-control:focus,
 .docent-dialog .form-select:focus {
-    border-color: var(--docent-accent, #64041f);
-    box-shadow: 0 0 0 1px var(--docent-accent, #64041f);
+    border-color: var(--docent-accent, var(--docent-brand));
+    box-shadow: 0 0 0 1px var(--docent-accent, var(--docent-brand));
 }
