@@ -18,14 +18,13 @@
     <link href="{$portal_url}/++plone++DocentIMS.ActionItems/css/tinymce-formats.css" rel="stylesheet" type="text/css" />
   </after>
 
-  <!-- The theme stylesheet. Linked from here rather than as manifest.cfg's
-       production-css so the URL can carry the css_version token: a plain
-       URL is held by the browser's heuristic cache for a day or more after
-       a deploy (see browser/css_version.py). First, so that add_form.css
-       and docent_dialogs.css below still win the cascade. -->
-  <after css:theme-children="head">
-    <link href="{$portal_url}/++theme++docent-ims-theme/styles/theme.min.css?v={$css_version}" rel="stylesheet" type="text/css" />
-  </after>
+  <!-- styles/theme.min.css is NOT linked on the page. It is the editor's
+       content stylesheet only (manifest.cfg: tinymce-content-css). Plone 6
+       loads no Bootstrap or Barceloneta CSS on this site; the pages are
+       styled by DocentIMS.ActionItems' action_items.css, by add_form.css
+       and by docent_dialogs.css. Linking the theme stylesheet site-wide
+       (29 Oct 2026, for one afternoon) drew every button inside
+       #content-core as a 3.5em outlined box, TinyMCE's toolbar included. -->
 
   <!-- DocentIMS: grey out and disable the "Add New User" button on the
        Users control panel (@@usergroup-userprefs). Visual + unclickable. -->

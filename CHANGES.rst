@@ -5,6 +5,17 @@ Changelog
 1.0a1 (unreleased)
 ------------------
 
+- Stop linking ``styles/theme.min.css`` on every page. Plone 6 never loaded
+  it (``production-css`` is read by plone.app.theming 7 and then unused),
+  so the site has always been styled by DocentIMS.ActionItems'
+  ``action_items.css`` plus ``add_form.css`` and ``docent_dialogs.css``;
+  linking the theme stylesheet drew every button inside ``#content-core``
+  as a 3.5em outlined box, TinyMCE's toolbar included. ``theme.min.css``
+  remains the editor's content stylesheet (``tinymce-content-css``), and
+  its editing area is white again rather than the page ground. [docentims]
+  The still-needed tint on add and edit forms is the pale rose it was
+  (``--docent-needed``), not the error red.
+
 - The standard Docent theme. Inter for all text (self-hosted variable
   webfont, served from ``++plone++DocentIMS.ActionItems/fonts/``), in place
   of Roboto Slab, Open Sans, Bitter, Encode Sans and the Helvetica stack; a
