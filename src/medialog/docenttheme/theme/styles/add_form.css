@@ -834,8 +834,8 @@ form.rowlike.ai-chips-on label .required {
 form.rowlike.ai-chips-on .ai-still-needed .form-control,
 form.rowlike.ai-chips-on .ai-still-needed .form-control:invalid,
 form.rowlike.ai-chips-on .ai-still-needed .form-select:invalid {
-    border-color: var(--docent-danger);
-    background: var(--docent-danger-tint);
+    border-color: var(--docent-needed, #c0405a);
+    background: var(--docent-needed-tint, #fdf7f8);
 }
 
 /* Meeting Location is a Select2 token box, and DocentIMS.ActionItems'
@@ -850,8 +850,8 @@ form.rowlike.ai-chips-on .ai-still-needed .form-select:invalid {
    selector is the more specific of the two, so !important settles it. */
 form.rowlike.ai-chips-on .ai-still-needed .select2-choices,
 form.rowlike.ai-chips-on .ai-still-needed .select2-choice {
-    border-color: var(--docent-danger) !important;
-    background: var(--docent-danger-tint) !important;
+    border-color: var(--docent-needed, #c0405a) !important;
+    background: var(--docent-needed-tint, #fdf7f8) !important;
 }
 
 /* Focus still belongs to the project colour, tinted or not. */
@@ -872,9 +872,9 @@ form.rowlike.ai-chips-on .ai-still-needed .form-control:focus {
    sits inside that border, so only the border and the editing area are
    coloured - the same treatment the plain boxes get. */
 form.rowlike.ai-chips-on .ai-still-needed .tox-tinymce {
-    border-color: var(--docent-danger);
+    border-color: var(--docent-needed, #c0405a);
 }
 
 form.rowlike.ai-chips-on .ai-still-needed .tox-tinymce .tox-edit-area__iframe {
-    background-color: var(--docent-danger-tint);
+    background-color: var(--docent-needed-tint, #fdf7f8);
 }
