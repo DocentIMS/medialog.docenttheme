@@ -5,6 +5,12 @@ Changelog
 1.0a1 (unreleased)
 ------------------
 
+- Put ``production-css`` back. It is Products.CMFPlone, not plone.app.theming,
+  that adds it to every page (last in ``<head>``): without it the toolbar and
+  the page frame lose their stylesheet. The TinyMCE toolbar and menubar inside
+  ``#content-core`` get their own measurements back instead of the Editorial
+  3.5em outlined-button treatment. [docentims]
+
 - Stop linking ``styles/theme.min.css`` on every page. Plone 6 never loaded
   it (``production-css`` is read by plone.app.theming 7 and then unused),
   so the site has always been styled by DocentIMS.ActionItems'

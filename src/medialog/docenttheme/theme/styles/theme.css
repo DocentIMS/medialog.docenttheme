@@ -14928,6 +14928,37 @@ ul.pagination li:last-child {
   text-decoration: none;
   white-space: nowrap;
 }
+/* TinyMCE's toolbar and menubar live inside #content-core on add and edit
+   forms, so the Editorial button rule above would draw every one of its
+   buttons as a 3.5em outlined box. Give them TinyMCE's own measurements
+   back (oxide skin: 28px high, 34px wide tool buttons, quiet hover). */
+#content-core .tox button,
+#content-core .tox .tox-mbtn,
+#content-core .tox .tox-tbtn {
+  box-shadow: none;
+  height: 28px;
+  line-height: 28px;
+  padding: 0 4px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  color: #222f3e !important;
+  background-color: transparent;
+  border-radius: 3px;
+  text-transform: none;
+  letter-spacing: 0;
+  transition: none;
+}
+#content-core .tox .tox-tbtn {
+  width: 34px;
+  padding: 0;
+}
+#content-core .tox button:hover,
+#content-core .tox .tox-mbtn:hover,
+#content-core .tox .tox-tbtn:hover {
+  background-color: #cce2fa;
+}
+
 #content-core input[type=submit]:hover,
 #content-core input[type=reset]:hover,
 #content-core input[type=button]:hover,
