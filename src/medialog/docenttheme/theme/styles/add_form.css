@@ -132,6 +132,22 @@ h2.sit_tit {
     gap: 10px;
 }
 
+/* The title bar is the form's own chrome, not page content. A site's
+   Style Settings (@@docent-content.css) set every `#content h1` to the
+   content heading - 32px, bold, ink - with !important, and that reached
+   this bar too: every add and edit form on such a site was headed in
+   heavy black. Said again here from inside #content, which outranks it,
+   so the bar reads the same on every site and for every form that gets
+   one, present and future. Style Settings still own the headings inside
+   the page. */
+.template-action_items #content h1.documentFirstHeading,
+.template-edit #content h1.documentFirstHeading,
+.viewpermission-add-portal-content #content h1.documentFirstHeading {
+    color: #8B6914 !important;
+    font-size: 1.05rem !important;
+    font-weight: 400 !important;
+}
+
 /* The round mark, on the heading's own row rather than on a band of its
    own above it. A background on ::before rather than an <img>: the
    heading is Plone's, rendered by the main template well before any of
