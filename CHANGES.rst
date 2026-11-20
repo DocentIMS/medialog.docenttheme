@@ -5,6 +5,11 @@ Changelog
 1.0a1 (unreleased)
 ------------------
 
+- The title bar on add and edit forms keeps its own style (Inter, 1.05rem,
+  regular, the logo's brown) on a site whose Style Settings set every
+  content ``h1`` to 32px bold: ``add_form.css`` now says it from inside
+  ``#content`` with ``!important``. [docentims]
+
 - Put ``production-css`` back. It is Products.CMFPlone, not plone.app.theming,
   that adds it to every page (last in ``<head>``): without it the toolbar and
   the page frame lose their stylesheet. The TinyMCE toolbar and menubar inside
