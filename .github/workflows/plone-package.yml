@@ -49,9 +49,9 @@ jobs:
                   # Pin setuptools to the Plone 6.0 KGS version. The venv ships
                   # a newer setuptools (79.x); buildout runs inside the venv and
                   # cannot downgrade it, so installing the zope2instance recipe
-                  # fails with "VersionConflict: setuptools 79.x vs ==75.8.2"
+                  # fails with "VersionConflict: setuptools 79.x vs ==75.8.2" (now 80.10.2 and zc.buildout 4.2.0, 19 Nov 2026)
                   # whenever the buildout eggs cache is cold. Match it up front.
-                  .venv/bin/pip install "setuptools==75.8.2" "zc.buildout==4.1.4"
+                  .venv/bin/pip install "setuptools==80.10.2" "zc.buildout==4.2.0"
 
             - name: Run buildout
               run: .venv/bin/buildout -c test_plone60.cfg
